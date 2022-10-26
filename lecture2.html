@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 2</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 2 by Nikolai Gad</p>
+					<p>München, 26. October 2022</p>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">This week</h3>
+					<ul>
+						<li>An example: Usherwood and Wright "Sticks and Stones"</li>
+						<li>Tutorial: More R basics and your first data analysis </li>
+					</ul>
+				</section>
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Usherwood, S., & Wright, K. A. (2017). Sticks and stones: Comparing Twitter campaigning strategies in the European Union referendum.</h3>
+					<section>
+					</section>
+					<section>
+						<h2>Research question</h2>
+						<p>“This article considers the basic question of how and why the campaigns on the two sides differed in their content and framing.”</p>
+						<p>“Do new social media reinforce or subvert the logics of campaigning that existed beforehand?” (p. 372)</p>
+					</section>
+					<section>
+					<h2>Hypotheses </h2>
+					<ul>
+						<li class="fragment fade-in-then-semi-out">All groups will use Twitter more to mobilise existing supporters, rather than to convert new ones (H1) </li>
+						<li class="fragment fade-in-then-semi-out">Leave groups will be more negative in their framing (H2) </li>
+						<li class="fragment fade-in-then-semi-out">Leave groups will make more use of emotional language and frames (H3) </li>
+						<li class="fragment fade-in-then-semi-out">Leave groups will make more use of ‘sticks’ than Remain (H4) </li>
+						<li class="fragment fade-in-then-semi-out">Remain groups will make more use of ‘stones’ than Leave (H5) </li>
+					</ul>
+					</section>
+					<section>
+						<p class="fragment">Sticks: “Sticks are mistakes made by the other side, which are then used to question that side’s competence and credibility.” (p. 376)</p>
+						<p class="fragment">Stones: “Stones are identified as core arguments – both substantive and emotional – in an attempt to anchor debate and set agendas.” (p. 376) </p>
+					</section>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Data collection</h3>
+					<p>Tweets collected weekly: Tweet content, time stamps, retweets, followers. </p>
+					<h3 class="fragment">Advantages and disadvantages of data collection method? </h3>
+					<ul>
+						<li class="fragment">Data access/availability </li>
+						<li class="fragment">Tweets have not had equal time to be retweeted. </li>
+						<li class="fragment">Deleted tweets. </li>
+					</ul>
+				</section>
+				<section>
+					<h2>Sample statistics </h2>
+					<section>
+						<!-- Follower growth -->
+						<img src="pic/lecture1/Sticks and stones-table1.svg" width="80%" />
+					</section>
+					<section>
+						<!-- Number of tweets per group -->
+						<img src="pic/lecture1/Sticks and stones-figure1.svg" width="80%" />
+					</section>
+				</section>
+				<section>
+					<h2>Follower engagement </h2>
+					<section>
+						<!-- Absoulte retweets -->
+						<img src="pic/lecture1/Sticks and stones-figure2.svg" width="80%" />
+					</section>
+					<section>
+						<!-- Relative retweets -->
+						<img src="pic/lecture1/Sticks and stones-figure3.svg" width="80%" />
+					</section>
+					<section>
+						<h4>Validity of measures: What are they actually trying to measure? And do you think these measures are valid?</h4>
+						<p class="fragment">Does retweeting “...suggest it has an increased value for (…) individuals and scope to become viral, spreading out to an ever-wider set of users and thus creating opportunities to inform or sway voters.”? </p>
+						<ul>
+							<li class="fragment">Can we imagine that a retweet tends to mean something different for followers of one group than another? </li>
+						</ul>
+						<p class="fragment">Reliability of measure: </p>
+						<ul>
+							<li class="fragment">Mean retweets/tweet/follower – is this a fair measure to compare engagement across groups? Bias towards how much each group tweet? </li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h2>Framing analysis</h2>
+					<section>
+					<table>
+						<thead>
+							<tr>
+								<th></th>
+								<th>Positive: </th>
+								<th>Negative: </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Substantial: </td>
+								<td>Argument for benefits of preferred outcome. </td>
+								<td>Argument against negative consequences of outcome not preferred. </td>
+							</tr>
+							<tr>
+								<td>Presentation of group/opponent: </td>
+								<td>Positive mention of own group. </td>
+								<td>Negative mention of other group. </td>
+							</tr>
+						</tbody>
+					</table>
+					</section>
+					<section>
+						<!-- Frames -->
+						<img src="pic/lecture1/Sticks and stones-table2.svg" width="80%" />
+					</section>
+					<section>
+						<!-- Pos framed tweets -->
+						<img src="pic/lecture1/Sticks and stones-figure4.svg" width="80%" />
+					</section>
+					<section>
+						<!-- Neg tweets about group (framing)  -->
+						<img src="pic/lecture1/Sticks and stones-figure5.svg" width="80%" />
+					</section>
+					<section>
+						<h3>Is this a computational method? </h3>
+					</section>
+				</section>
+				<section>
+					<h2>Thematic analysis</h2>
+					<section>
+						<h3>Inductively driven by research question a number of themes were identified and each tweet was coded with it’s primary theme. </h3>
+					</section>
+					<section>
+						<!-- Themes -->
+						<img src="pic/lecture1/Sticks and stones-table3.svg" width="80%" />
+					</section>
+					<section>
+						<h3>Is this a computational method? </h3>
+					</section>
+				</section>
+				<section>
+					<h2>Sentiment analysis</h2>
+					<section>
+					<ul>
+						<li class="fragment">Methods to systematically identify, extract, and quantify affective states and subjective information computationally. </li>
+						<li class="fragment">Many different approaches. </li>
+						<li class="fragment">Usherwood and Wright uses the most simple approach. </li>
+						<li class="fragment">Dictionary based - lexical semantics (contrary to supralexical or lexicogrammar) </li>
+						<li class="fragment">A list of positive words and a list of negative words predefined. </li>
+						<li class="fragment">Count how often each group use each word (per individual tweet and per group). </li>
+					</ul>
+					</section>
+					<section>
+					<h3>Any drawbacks on this method to sentiment analysis? </h3>
+					<ul>
+						<li class="fragment">Negation ("I do not dislike...", "Disliking the environment is not really my thing")</li>
+						<li class="fragment">Sarcasm and irony. </li>
+						<li class="fragment">Sentiment expressed without "affective words"? </li>
+						<li class="fragment">Ambiguity (lexical, scopal, and referential)</li>
+						<li class="fragment">Cultural references. </li>
+						<li class="fragment">Positive/negative distinction relevant/satisfactory cover affects? </li>
+					</ul>
+					</section>
+					<section>
+						<!-- Sentiments -->
+						<img src="pic/lecture1/Sticks and stones-table4.svg" width="80%" />
+					</section>
+				</section>
+				<section>
+					<h2>Word frequencies </h2>
+					<section>
+						<!-- Word frequencies -->
+						<img src="pic/lecture1/Sticks and stones-table5.svg" width="70%" />
+					</section>
+					<section>
+						<h3>Is this a computational method? </h3>
+						<p class="fragment">Could be considered a (very) simple kind of topic modelling?</p>
+					</section>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Conclusions </h3>
+					<section>
+						<h2>Research question</h2>
+						<p>“This article considers the basic question of how and why the campaigns on the two sides differed in their content and framing.”</p>
+						<p>“Do new social media reinforce or subvert the logics of campaigning that existed beforehand?” (p. 372)</p>
+					</section>
+					<section>
+					<h2>Hypotheses </h2>
+					<ul>
+						<li class="fragment fade-in-then-semi-out">All groups will use Twitter more to mobilise existing supporters, rather than to convert new ones (H1) </li>
+						<li class="fragment fade-in-then-semi-out">Leave groups will be more negative in their framing (H2) </li>
+						<li class="fragment fade-in-then-semi-out">Leave groups will make more use of emotional language and frames (H3) </li>
+						<li class="fragment fade-in-then-semi-out">Leave groups will make more use of ‘sticks’ than Remain (H4) </li>
+						<li class="fragment fade-in-then-semi-out">Remain groups will make more use of ‘stones’ than Leave (H5) </li>
+					</ul>
+					</section>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Take aways </h3>
+					<ul>
+						<li class="fragment">Are your study driven by a research question or data? (or methods) </li>
+						<li class="fragment">Is your data a sample? What is it a sample of? And is it representative? </li>
+						<li class="fragment">Have you defined the concepts you are studying clearly enough to be measured? </li>
+					</ul>
+				</section>
+				<section>
+					<h1>Tomorrow: Tutorial on basic data analysis in R</h1>
+					<ul>
+						<li>Introduction to basic analysis in R. </li>
+						<li>Task analysing Political Ads on Snapchat (with varying levels of difficulty). </li>
+					</ul>
+				</section>
+
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
