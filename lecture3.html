@@ -1,0 +1,345 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 3</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p> Lecture 3 by Nikolai Gad</p>
+					<p>München, 2. November 2022</p>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>What is Computational Methods/Data Science/Big Data? </li>
+						<li>New subjects to study. </li>
+						<li>New data (for PolSci) </li>
+						<li>What can we use computational methods for? </li>
+						<li>Next week </li>
+						
+					</ul>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>	
+					<section>
+						<h2>How did you find exercise 2? </h2>
+						<ul>
+							<li class="fragment">Weekly polls on Moodle </li>
+							<li class="fragment">Poll about last week's tutorial online since Monday </li>
+							<li class="fragment">Any other comments on tutorial? </li>
+							<li class="fragment">Always feel free to contact me with feedback on tutorials! </li>
+						</ul>
+					</section>						
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">What is Computational Methods? Some terminology </h3>
+					<section>
+						<p class="fragment">Not one right answer! </p>
+						<p class="fragment">Today we will look at one take of this: <em>Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323.</em></p>
+					</section>
+					<section>
+						<h2>Big Data </h2>
+						<ul>
+							<li class="fragment">A question of size? </li>
+							<li class="fragment">National Institute of Standards and Technology: Parallel computing needed instead of horizontal scaling. </li>
+							<li class="fragment">Brady: "A change in our cognitive environment" - The nature of big data is different: </li>
+							<ul>
+								<li class="fragment">Digitalised data: Structured and replicable. </li>
+								<li class="fragment">Connectedness: (almost) Instant access and feedback. </li>
+								<li class="fragment">Networked: Point-to-point and many-to-many, individualised/targeted mass communnication. </li>
+								<li class="fragment">Automatically recorded in real-time. </li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h2>Data Science </h2>
+						<p class="fragment">Brady presents three views: </p>
+						<ul>
+							<li class="fragment">Data Science as an umbrella containing skills from many disciplines (see table based on Donoho). </li>
+							<li class="fragment">Data Science as a set of skills or a seperate discipline. </li>
+							<li class="fragment">A new paradigm of data-driven science “that uses large collections of data to make scientific discoveries.” (based on Jim Gray) </li>
+						</ul>
+						<p class="fragment">But at the end of the day...</p>
+						<blockquote class="fragment" cite="Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323. https://doi.org/10.1146/annurev-polisci-090216-023229">“We are left with real phenomena but inadequate language.” (p.  304)</blockquote>
+						<cite style="font-size: small; font-style: italic;">Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323. https://doi.org/10.1146/annurev-polisci-090216-023229</cite>
+					</section>
+					<section>
+						<img src="pic/lecture2/Adcock og Collier - 2001 - Measurement Validity A Shared Standard for Qualit.svg" style="float: left; "/>
+						<cite style="font-size: small; font-style: italic; float: left; width: 20%; text-align: left; margin: 10px;">Adcock, R., & Collier, D. (2001). Measurement Validity: A Shared Standard for Qualitative and Quantitative Research. American Political Science Review, 95(3), 529–546.</cite>
+					</section>
+					<section>
+						<div style="float: left; width: 45%">
+							<h3>Traditional PolSci methods: </h3>
+							<ul>
+								<li class="fragment">Research Question</li>
+								<li class="fragment">Hypothesis </li>
+								<li class="fragment">Conceptualisation </li>
+								<li class="fragment">Operationalisation </li>
+								<li class="fragment">Measurement / Data </li>
+							</ul>
+						</div>
+						<div style="float: right; width: 45%">
+							<h3>Data-driven methods: </h3>
+							<ul>
+								<li class="fragment">Data first! </li>
+								<li class="fragment">What does it represent? (Operationalisation) </li>
+								<li class="fragment">What does it mean? (conceptualisation) </li>
+								<li class="fragment">What can it tell us? (hypothesis) </li>
+								<li class="fragment">What can we learn from this? (RQ) </li>
+							</ul>
+						</div>
+						<q style="position: absolute; bottom: 0px; font-size: x-small">Traditional approach loosely based on Adcock, R., & Collier, D. (2001). Measurement Validity: A Shared Standard for Qualitative and Quantitative Research. American Political Science Review, 95(3), 529–546.</q>
+					</section>
+					<section>
+						<blockquote cite="Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323. https://doi.org/10.1146/annurev-polisci-090216-023229">“We are left with real phenomena but inadequate language.” (p.  304)</blockquote>
+						<cite style="font-size: small; font-style: italic;">Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323. https://doi.org/10.1146/annurev-polisci-090216-023229</cite>
+					</section>
+				</section>
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">New subjects to study  </h3>
+					<p>Big Data and Data Science (and the developments in computation that has enabled these phenomona) also brings with them new <em>political</em> issues to study. </p>
+					<p class="fragment">Some examples Brady mentions: </p>
+					<ul>
+						<li class="fragment">Cyber War</li>
+						<li class="fragment">Smart Cities </li>
+						<li class="fragment">Precision Medicine </li>
+						<li class="fragment">(Online) media </li>
+						<li class="fragment">Robots and AI </li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">New data available (for Political Science) </h3>
+					<section>
+						<h2>Administrative Data (register data) </h2>
+						<p class="fragment">Long history in PolSci, but new possibilities with computational methods: </p>
+						<ul>
+							<li class="fragment">Larger quantities and more complex analysis</li>
+							<li class="fragment">Combining datasets (not always trivial to do though) </li>
+							<li class="fragment">Be aware of reliability of this kind of data! </li>
+							<li class="fragment">Absence of data. </li>
+							<li class="fragment">Also be aware of ethics and privacy regulation. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Internet Data </h2>
+						<p class="fragment">(Almost) everything we do online leaves a digital trace. </p>
+						<ul>
+							<li class="fragment">One-click actions. </li>
+							<li class="fragment">Fine grained time series data. </li>
+							<li class="fragment">Online experiments <span class="fragment">(be aware of ethics here though!)</span></li>
+							<li class="fragment">Real-time and unfiltered data collection. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Internet Data </h2>
+						<p class="fragment">Pros: </p>
+						<ul>
+							<li class="fragment">Data about whole networks </li>
+							<li class="fragment">Real-time data </li>
+							<li class="fragment">Hidden patterns </li>
+						</ul>
+						<p class="fragment">Cons/Challenges: </p>
+						<ul>
+							<li class="fragment">Unrepresentative samples: </li>
+							<ul>
+								<li class="fragment">Internet users generally not representative. </li>
+								<li class="fragment">User of specific platforms even less so. </li>
+								<li class="fragment">Nudging by platforms affects online behaviour. </li>
+							</ul>
+							<li class="fragment">Absence of data. </li>
+							<li class="fragment">Access to data. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Text Data </h2>
+						<p>Long history of text analysis in PolSci (despite what Brady insinuates), but computation provides new methods to collect and analyse (large quantities of) text: </p>
+						<ul>
+							<li class="fragment">Automatic content analysis </li>
+							<li class="fragment">Word frequencies and lexical analysis </li>
+							<li class="fragment">Classification (supervised machine learning) </li>
+							<li class="fragment">Clustering (unsupervised machine learning) </li>
+							<li class="fragment">Ideological scaling (supervised machine learning)  </li>
+							<li class="fragment">(Dimension reduction (unsupervised machine learning) ) </li>
+						</ul>
+						<p class="fragment">New sources of text (Brady does not mention these, but nonetheless significant to computational methods): </p>
+						<ul>
+							<li class="fragment">Immense amounts of new political text produced. </li>
+							<li class="fragment">Automated collection of text data.  </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Text Data </h2>
+						<p class="fragment">Pros: </p>
+						<ul>
+							<li class="fragment">Cost! Less time consuming and researcher time equals money. </li>
+							<li class="fragment">Reliability </li>
+							<li class="fragment">Replicability </li>
+						</ul>
+						<p class="fragment">Cons - “all quantitative models of language are wrong – but some are useful” quote from Grimmer & Stewart (2013): </p>
+						<ul>
+							<li class="fragment">Validity can be tricky </li>
+							<li class="fragment">(Do they actually bring anything new to PolSci?) </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Sensor, Audio, video, and other data </h2>
+						<ul>
+							<li class="fragment">Sensor data </li>
+							<li class="fragment">Video and audio  </li>
+							<li class="fragment">(Images and static visuals)  </li>
+						</ul>
+					</section>
+				</section>
+
+
+
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">What can we use Computational Methods for (in PolSci)? </h3>
+					<section>
+					</section>
+					<section>
+						<h3>Data science comes from different fields</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Computer scientists: </th>
+									<th>Statisticians (PolSci methodologists): </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Pattern recognition </td>
+									<td>Hypothesis testing of causal relationships </td>
+								</tr>
+								<tr>
+									<td>Predictions </td>
+									<td>Explanation </td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<blockquote cite="Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323. https://doi.org/10.1146/annurev-polisci-090216-023229">“Whatever the reason, deep learning methods seem to work remarkably well for pattern recognition problems, but their interoperation is often difficult given their arcane complexity. <strong>They are better at yielding predictions than explanatory insights.” (p. 315) </strong></blockquote>
+						<cite style="font-size: small; font-style: italic;">Brady, H. E. (2019). The Challenge of Big Data and Data Science. Annual Review of Political Science, 22(1), 297–323. https://doi.org/10.1146/annurev-polisci-090216-023229</cite>
+					</section>
+					<section>
+						<img src="https://imgs.xkcd.com/comics/machine_learning.png" />
+						<cite style="font-size: small; font-style: italic;"><a href="https://xkcd.com/1838/">https://xkcd.com/1838/</a>	  </cite>
+					</section>
+					<section>
+						<h2>Four basic problems in (quantitative) empirical research </h2>
+						<ol>
+							<li class="fragment">Forming concepts (and measuring them) </li>
+							<li class="fragment">Reliable descriptive inference </li>
+							<li class="fragment">Causal inferences from past experience </li>
+							<li class="fragment">Predicting the future </li>
+						</ol>
+					</section>
+					<section>
+						<h2>Forming concepts (and measuring them) </h2>
+						<p class="fragment">Factor analysis, principal component analysis, and (simple) cluster analysis have a long history in PolSci. </p>
+						<p class="fragment">Machine learning is great at pattern recognition. </p>
+						<h3 class="fragment">Completely data-driven approaches for concept formation still viewed with some (justified) scepticism though! </h3>
+						<p class="fragment">Feeds into discussion about inductive vs. deductive research methods, and pragmatic vs. theoretic concept formation. </p>
+					</section>
+					<section>
+						<h2>Reliable descriptive inference </h2>
+						<p class="fragment">Sometimes (too often) big data are presented as population data. </p>
+						<p class="fragment">Unrepresentative data and irrelevant variables gives biased results. </p>
+						<h3 class="fragment">A lot of data and a lot of variables does not equal representativeness! </h3>
+					</section>
+					<section>
+						<h2>Causal inferences from past experience </h2>
+						<p class="fragment">Probably where machine learning and other computational methods have least to offer. </p>
+						<p class="fragment">Look out for statements like “[a] worldview built on the importance of causation is being challenged by a preponderance of correlations” </p>
+						<h3 class="fragment">Correlation does not equal causation!</h3>
+						<p class="fragment">=> Sampling and variable selection still needs to be done thoroughly to check for spuriousness (despite what some data scientists migth tell you). </p>
+					</section>
+					<section>
+						<h2>Predicting the future </h2>
+						<p class="fragment">Machine Learning and in particular deep learning methods have turned out to be incredible good at this (sometimes). </p>
+						<p class="fragment">But often difficult to interpret what is going on in the resulting algorithms. </p>
+						<p class="fragment">So why do we need to know what caused something if we (ie our algorithms) can predict the outcome with enough data anyway? </p>
+						<ul>
+							<li class="fragment">We still want to learn and understand (purpose of any science/research). </li>
+							<li class="fragment">Biased (discriminatory) algorithms.  </li>
+							<li class="fragment">Critical research: Difficult to question existing social structures if we don't understand them, but can only predict the outcome. </li>
+						</ul>
+						
+					</section>
+					<section>
+						<h2>So can computational methods actually teach us anything new? </h2>
+						<p class="fragment">To some extent the jury is still out on this. </p>
+						<p class="fragment">But for now we can note that Machine Learning alone are mainly good at: </p>
+						<ul>
+							<li class="fragment">Automated pattern recognistion, and </li>
+							<li class="fragment">Prediction </li>
+						</ul>
+						<p class="fragment">...which again can be used as part of a research design to do more: </p>
+						<ul>
+							<li class="fragment">Measure new variables </li>
+							<li class="fragment">Measure them more precisely (?) </li>
+							<li class="fragment">Classify/measure larger datasets </li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">This week's tutorial </h3>
+					<p class="fragment">Install package for use next week. </p>
+					<p class="fragment">From next week onwards lectures will be more directly related to tutorials. </p>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Next week: Text as data </h3>
+					<p class="fragment">Some parts of assigned text a bit technical, but additional text explain some things in more simple language. </p>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
