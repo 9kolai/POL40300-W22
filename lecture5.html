@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 5</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 5 by Nikolai Gad</p>
+					<p>München, 16. November 2022</p>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Recap from last week's introduction to automated text analysis. </li>
+						<li>An example of automated text analysis in PolSci </li>
+						<li>Introduction to text analysis in R (Quanteda) </li>
+						<li>Next week </li>
+						
+					</ul>
+				</section>
+
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Steps in automated text analysis. </h3>
+					<ol>
+						<li class="fragment">Collect text data (we will cover this later). </li>
+						<li class="fragment">Pre-processing data (quantifying text). </li>
+						<li class="fragment">Analysing text data. </li>
+						<li class="fragment">(Validate your results)</li>
+					</ol>
+				</section>
+				
+					
+				<section>
+					<h3 style="color: rgb(0,101,189)">Possibilities with computational text analysis </h3>
+					<p class="fragment">Four principles of automated text analysis: </p>
+					<ol>
+						<li class="fragment">All quantitative models of language are wrong - but some are useful. </li>
+						<li class="fragment">Quantitative models for text amplify resources and augment humans. </li>
+						<li class="fragment">There is no globally best method for automated text analysis. </li>
+						<li class="fragment">Validate, validate, validate! </li>
+					</ol>
+				</section>
+
+
+				<section>
+					<h1>An example of a dictionay study in Political Science  </h1>
+					<p class="fragment">Maerz, S. F. (2019). Simulating pluralism: The language of democracy in hegemonic authoritarianism. Political Research Exchange, 1(1)</p>
+				</section>
+				<section>
+					<h3>Hypotheses</h3>
+					<ol>
+						<li class="fragment">The leaders of hegemonic regimes use a democratic style of language in their official speeches. </li>
+						<li class="fragment">Closed regimes hardly refer to a democratic style of language in their official communication. </li>
+						<li class="fragment">The leaders of competitive regimes use less democratic terms than those of hegemonic regimes. </li>
+					</ol>
+				</section>
+				<section>
+					<h3>Autocratic, hegemonic, and democratic regimes </h3>
+					<section>
+						<h1>Conceptualisation </h1>
+						<p class="fragment">Closed autocracy - Hegemonic regimes - Competitive regimes - Democracy </p>
+						<p class="fragment">In final analysis "backsliding democracies" are added. </p>
+						<ul>
+							<li class="fragment">Closed autocracies: No elected legislatures or single-party regime. </li>
+							<li class="fragment">Hegemonic regimes: Hold elections, but does not allow "real electoral competition" (p.6) </li>
+							<li class="fragment">Competitive regimes: Allow "...at least a minimum amount of <em>real</em> competition in multiparty elections." (p. 6) </li>
+						</ul>
+					</section>
+					<section>
+						<h1>Operationalisation </h1>
+						<p class="fragment">Two indicators from "Database of Political Institutions (DPI):</p>
+						<ul class="fragment">
+							<li>Legislative electoral competitiveness </li>
+							<li>Executive electoral competitiveness </li>
+						</ul>
+						<p class="fragment">The DPI is constructed by the World Bank and thouroughly documented on <a href="https://datacatalog.worldbank.org/dataset/wps2283-database-political-institutions">their website</a>. </p>
+					</section>
+					<section>
+						<h1>Operationalisation </h1>
+						<table>
+							<thead>
+								<tr>
+									<th class="fragment" data-fragment-index="1">Closed </th>
+									<th class="fragment" data-fragment-index="2">Hegemonic </th>
+									<th class="fragment" data-fragment-index="3">competitive </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="fragment" data-fragment-index="1">Both indices have scores of ≤ 4: no legislature, unelected legislature, or only one elected candidate or party.</td>
+									<td class="fragment" data-fragment-index="2">1. One or both scores of  > 4 and < 7: multiple parties allowed, but one gets all or 75 percent of available seats. </br>
+2. Legislative index scores 7, executive < 7: satellite parties to simulate competition while regime has full control.</td>
+									<td class="fragment" data-fragment-index="3">Executive index or both indices have scores of 7: competitive elections for executive, largest party got less than 75 percent of available seats in legislative elections.</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<h3>Data sample </h3>
+						<ul>
+							<li>Website with officially translated English speeches. </li>
+							<li>At least 10 translated speeches. </li>
+							<li>Random selection of democratic states included for reference. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Data sample </h3>
+						<img src="pic/lecture3/Maerz-table1.svg" />
+					</section>
+				</section>
+				<section>
+					<h3>Democratic/autocratic language</h3>
+					<section>
+						<h3>Conceptualisation </h3>
+						<p class="fragment">Distinction between <em>procedural</em> and <em>ideological</em> orientations. </p>
+						<img src="pic/lecture3/Maerz-figure1.svg" width="100%" class="fragment" />
+					</section>
+					<section>
+						<h3>Operationalisation </h3>
+						<p class="fragment">Styles of language calculated as word frequencies from dictionary. </p>
+						<h1 class="fragment">Dictionary construction</h1>
+						<ul>
+							<li class="fragment">Partly based on previously used dictionaries. </li>
+							<li class="fragment">But mainly from a "qualitative assessment of a stratified sample of speeches" + literature: </li>
+							<ul>
+								<li class="fragment">Most recent speech from each case sampled. </li>
+								<li class="fragment">This sample used as "pool of keywords". </li>
+								<li class="fragment">Keywords assigned to categories based on theory. </li>
+							</ul>
+						</ul>
+						<p class="fragment">Good way to construct dictionary? Potential problems? </p>
+					</section>
+					<section>
+						<h3>Operationalisation </h3>
+						<h1 class="fragment">Validation of dictionary </h1>
+						<ul>
+							<li class="fragment">Qualitative check of codings in sample of 110 speeches. </li>
+							<ul>
+								<li class="fragment">Random sample of 5% of speeches from each case, excluding those already used to construct dictionary. </li>
+								<li class="fragment">Keywords-in-context search. </li>
+							</ul>
+							<li class="fragment">Frequent negations and ambigiuous terms excluded. </li>
+						</ul>
+						<p class="fragment">Can you think of other ways to validate dictionary? </p>
+						<p class="fragment"><a href="Dictionary+for+the+Analysis.html">Final dictionary available from link in paper. </a></p>
+					</section>
+				</section>
+				<section>
+					<h3>Findings</h3>
+					<img src="pic/lecture3/Maerz-figure3.svg" width="75%"/>
+				</section>
+				
+
+				
+
+				
+				<section>
+					<h2 style="color: rgb(0,101,189)">Text analysis in Quanteda </h2>
+					<section>
+						<p class="fragment">Quanteda is a (collection of) R package(s) that makes it a lot easier to analyse text data. </p>
+						<ul>
+							<li class="fragment">Built by and for political scientists </li>
+							<li class="fragment">Consists of a collection of packages: </li>
+							<ul class="fragment">
+								<li>quanteda </li>
+								<li>quanteda.textmodels</li>
+								<li>quanteda.textstats</li>
+								<li>quanteda.textplots</li>
+								<li>quanteda.sentiment (not currently available on CRAN)</li>
+							</ul>
+							<li class="fragment">So install these before tutorial class if you plan to use your own computer. </li>
+						</ul>
+					</section>
+					<section>
+						<h3 class="fragment">This week's tutorial: The basics of computational text analysis. </h3>
+						<h3 class="fragment">Next week's lecture: More practical on how to actual do computational text analysis yourself. </h3>
+					</section>
+					<section>
+					</section>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
