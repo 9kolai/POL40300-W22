@@ -1,0 +1,658 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 6</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 6 by Nikolai Gad</p>
+					<p>München, 23. November 2022</p>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Workflow in Quanteda </li>
+						<li>Tokenisation w Quanteda </li>
+						<li>Dictionary analysis w Quanteda </li>
+						<li>Next week </li>
+						
+					</ul>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>
+					<section>
+						<h2>R packages </h2>
+						<p>Remember to always load packages before using them! </p>
+						<ul>
+							<li class="fragment">We only need to install packages once - so do not include this in your scripts. </li>
+							<li class="fragment">But we need to load the package (using the library() function) everytime we start R - so always include this in your script! </li>
+						</ul>
+					</section>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Typical Workflow with Quanteda </h3>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Workflow in Quanteda </h3>
+						<img src="pic/lecture10/QuantedaWorkflowWTxt.svg" width= "60%" />
+					</section>
+					<section>
+					<p>Differences between the 3 main objects in Quanteda. Why do we need all of them? </p>
+					<ul>
+						<li>Corpus: </li>
+						<ul class="fragment">
+							<li class="fragment">Complete text documents saved as character strings. </li>
+							<li class="fragment">Combines texts with document-level variables</li>
+						</ul>
+						<li>Tokens: </li>
+						<ul class="fragment">
+							<li class="fragment">Stores tokens in a list of vectors</li>
+							<li class="fragment">Preserves positions of words</li>
+						</ul>
+						<li>Document-feature-matrix: </li>
+						<ul>
+							<li class="fragment">Represents frequencies of features in documents in a matrix</li>
+							<li class="fragment">The most efficient structure, but it does not have information on positions of words</li>
+						</ul>
+					</ul>
+					<p class="fragment">Efficiency, convenience and additional information. </p>
+					<p class="fragment">Usually we want to work with the same data stored in all three different formats for different parts of our analysis (but sometimes one or two of them are enough). </p>
+					</section>
+					<section>
+						<p>Doc 1: intelligent applications creates intelligent business processes</p>
+						<p>Doc 2: bots are intelligent applications</p>
+						<p>Doc 3: i do business intelligence</p>
+						<img src="pic/lecture6/Document-Term-Matrix-with-Title-1.png" width="100%" />
+					</section>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Workflow in Quanteda </h3>
+						<img src="pic/lecture10/QuantedaWorkflowWTxt.svg" width= "60%" />
+					</section>
+				</section>
+				
+
+				
+				<section>
+					<h1>Extracting texts from a Quanteda corpus. </h1>
+					<pre><code class="r hljs" data-trim data-noescape>
+> corp <- corpus(c("My Christmas was ruined by your opposition tax plan.",
++                "Does the United_States or Sweden have more progressive taxation?"))
+<span class="fragment">> corp[1]</span>
+<span class="fragment">
+Corpus consisting of 1 document.
+text1 :
+"My Christmas was ruined by your opposition tax plan." </span>
+<span class="fragment">
+> as.character(corp[1])
+                                                 text1 
+"My Christmas was ruined by your opposition tax plan." 
+</span>
+					</code></pre>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Tokenisation with Quanteda </h3>
+					<section>
+						<h2>A Quanteda tokens object </h2>
+						<p class="fragment">Tokens are the units we split our texts documents into for analysis: </p>
+						<ul class="fragment">
+							<li>Words (most common), characters, or sentences </li>
+							<li>Unigrams, bigrams, n-grams </li>
+						</ul>
+						<p class="fragment">Quanteda's Token object is used to store tokens from all the text documents in our corpus.</p>
+						<p class="fragment">It bassically consists of a vector for each text document. And these vectors contain a text string for every single token in each text. </p>
+						<p class="fragment">So it is a list of string vectors: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> toks
+tokens from 2 documents.
+text1 :
+ [1] "My"         "Christmas"  "was"        "ruined"     "by"         "your"       "opposition" "tax"        "plan"       "."         
+
+text2 :
+ [1] "Does"          "the"           "United_States" "or"            "Sweden"        "have"          "more"          "progressive"   "taxation"      "?"           
+						</code></pre>
+					</section>
+					<section>
+						<h2>Creating a Quanteda tokens object</h2>
+						<p class="fragment">We can simply create a tokens object using the tokens() function. </p>
+						<p class="fragment">Either using a corpus object as input: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> toks <- tokens(corp)
+<span class="fragment">> toks
+tokens from 2 documents.
+text1 :
+ [1] "My"         "Christmas"  "was"        "ruined"     "by"         "your"       "opposition" "tax"        "plan"       "."         
+
+text2 :
+ [1] "Does"          "the"           "United_States" "or"            "Sweden"        "have"          "more"          "progressive"   "taxation"      "?"   </span>
+						</code></pre>
+						<p class="fragment">Or a simple character string or vector of character strings: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> library(stringr)
+> tokSen <- tokens(sentences[1:3])
+<span class="fragment">> tokSen
+tokens from 3 documents.
+text1 :
+[1] "The"    "birch"  "canoe"  "slid"   "on"     "the"    "smooth" "planks" "."     
+
+text2 :
+[1] "Glue"       "the"        "sheet"      "to"         "the"        "dark"       "blue"       "background" "."         
+
+text3 :
+ [1] "It's"  "easy"  "to"    "tell"  "the"   "depth" "of"    "a"     "well"  "."    </span>
+						</code></pre>
+					</section>
+					<section>
+						<h2>What to tokenise</h2>
+						<p class="fragment">Default is words, but sentences or characters also possible: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+>tokInaug <- tokens(corpInaug)
+>tokens(corpInaug, what = "sentence")
+>tokens(corpInaug, what = "character")
+						</code></pre>
+						<p class="fragment">Or n-grams: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tok1 <- tokens(sentences[1])
+> tok1
+Tokens consisting of 1 document.
+text1 :
+[1] "The"    "birch"  "canoe"  "slid"   "on"     "the"    "smooth" "planks" "."     
+
+> tokens_ngrams(tok1, n = 2:3)
+Tokens consisting of 1 document.
+text1 :
+ [1] "The_birch"        "birch_canoe"      "canoe_slid"       "slid_on"          "on_the"          
+ [6] "the_smooth"       "smooth_planks"    "planks_."         "The_birch_canoe"  "birch_canoe_slid"
+[11] "canoe_slid_on"    "slid_on_the"     
+[ ... and 3 more ]
+						</code></pre>
+					</section>
+					<section>
+						<p>Let us take a look at some more messy text: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+>txt2 <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!",
+         text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
+<span class="fragment">>tokens(txt2)
+Tokens consisting of 2 documents.
+text1 :
+ [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"     
+ [9] ","         "up"        "and"       "down"     
+[ ... and 5 more ]
+
+text2 :
+[1] "@kenbenoit"                      "working"                         ":"                              
+[4] "on"                              "#quanteda"                       "2day"                           
+[7] "4ever"                           ","                               "http://textasdata.com?page=123."</span>
+						</code></pre>
+						<p class="fragment">Removing punctuation and numbers: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tokens(txt2, remove_numbers = TRUE, remove_punct = TRUE)
+Tokens consisting of 2 documents.
+text1 :
+ [1] "This"      "is"        "$"         "in"        "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
+
+text2 :
+[1] "@kenbenoit"                      "working"                         "on"                              "#quanteda"                      
+[5] "2day"                            "4ever"                           "http://textasdata.com?page=123."
+						</code></pre>
+					</section>
+					<section>
+						<p>Also removing other special symbol characters </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tokens(txt2, remove_punct = TRUE, remove_symbols = TRUE)
+Tokens consisting of 2 documents.
+text1 :
+ [1] "This"      "is"        "10"        "in"        "999"       "different" "ways"      "up"        "and"       "down"      "left"      "and"      
+[ ... and 1 more ]
+
+text2 :
+[1] "@kenbenoit"                      "working"                         "on"                              "#quanteda"                      
+[5] "2day"                            "4ever"                           "http://textasdata.com?page=123."
+
+						</code></pre>
+					</section>
+					<section>
+						<p>Removing URL's</p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tokens(txt2, remove_url = TRUE)
+tokens from 2 documents.
+text1 :
+ [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"        
+[14] "left"      "and"       "right"     "!"        
+
+text2 :
+[1] "@kenbenoit" "working"    ":"          "on"         "#quanteda"  "2day"       "4ever"      ","     
+						</code></pre>
+					</section>
+					<section>
+						<h2>Handling social media posts</h2>
+						<p class="fragment">Removing #'s and @'s used to be simple in earlier versions of Quanteda, but not anymore. </p>
+						<p class="fragment">Luckily we will rarely need to remove these characters. </p>
+						<p class="fragment">But if needed you can use the functions from the stringR package (recommended). </p>
+						<p class="fragment">Or install an older version of Quanted (not recommended): </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tokens(txt2, remove_punct = TRUE, remove_twitter = TRUE)
+tokens from 2 documents.
+text1 :
+ [1] "This"      "is"        "10"        "in"        "999"       "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
+
+text2 :
+ [1] "kenbenoit"      "working"        "on"             "quanteda"       "2day"           "4ever"          "http"           "textasdata.com" "page"          
+[10] "123"           
+						</code></pre>
+					</section>
+					<section>
+						<h2>Stop words</h2>
+						<p class="fragment">Words that are not interesting for our analysis and considered noise. </p>
+						<p class="fragment">Usually prepositions and conjugations are considered to not have much meaning on their own. </p>
+						<p class="fragment">Pre-made lists of stop words available with Quanteda: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> head(stopwords("en"), 20)
+ [1] "i"          "me"         "my"         "myself"     "we"         "our"        "ours"       "ourselves"  "you"        "your"       "yours"      "yourself"  
+[13] "yourselves" "he"         "him"        "his"        "himself"    "she"        "her"        "hers"      
+<span class="fragment">> head(stopwords("de"), 20)
+ [1] "aber"    "alle"    "allem"   "allen"   "aller"   "alles"   "als"     "also"    "am"      "an"      "ander"   "andere"  "anderem" "anderen" "anderer" "anderes"
+[17] "anderm"  "andern"  "anderr"  "anders" </span>
+						</code></pre>
+						<p class="fragment">Longer lists of stopwords also available: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+stopwords("en", source = "stopwords-iso")
+stopwords("de", source = "stopwords-iso")
+						</code></pre>
+						<p class="fragment">Other languages and sources available. </p>
+					</section>
+					<section>
+						<h2>Removing stop words from tokens object</h2>
+						<p class="fragment">To remove stop words we use the tokens_select() function and asks R to remove the words we have selected. </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tok2 <- tokens(txt2, remove_punct = TRUE, remove_numbers = TRUE)
+<span class="fragment">> tokens_select(tok2, pattern = stopwords("en"), selection = "remove")
+tokens from 2 documents.
+text1 :
+[1] "different" "ways"      "left"      "right"    
+
+text2 :
+[1] "@kenbenoit"     "working"        "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"   </span>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Removing other keywords. </h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> keyWords <- c("2day", "4ever")
+<span class="fragment">> tokens_select(tok2, pattern = keyWords, selection = "remove")
+tokens from 2 documents.
+text1 :
+ [1] "This"      "is"        "in"        "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
+
+text2 :
+[1] "@kenbenoit"     "working"        "on"             "#quanteda"      "http"           "textasdata.com" "page"        </span>
+						</code></pre>
+						<p class="fragment">Or we can choose to only keep certain keywords: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tokens_select(tok2, pattern = keyWords, selection = "keep")
+tokens from 2 documents.
+text1 :
+character(0)
+
+text2 :
+[1] "2day"  "4ever"
+						</code></pre>
+					</section>
+					<section>
+						<p>Now why would we only want to keep only certain keywords? </br>
+						Another example: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> keyWords <- c("citizens", "fellow")
+> tokens_select(tokInaug, pattern = keyWords, selection = "keep")
+tokens from 5 documents.
+text1 :
+[1] "citizens" "fellow"   "citizens" "fellow"   "citizens" "citizens"
+
+text2 :
+[1] "Fellow"   "citizens"
+
+text3 :
+[1] "citizens" "citizens"
+
+text4 :
+ [1] "Fellow"   "Citizens" "fellow"   "citizens" "fellow"   "citizens" "fellow"   "citizens" "fellow"   "citizens"
+
+text5 :
+ [1] "fellow"   "citizens" "fellow"   "citizens" "fellow"   "citizens" "citizens" "fellow"   "citizens" "fellow"   "citizens" "citizens" "fellow"   "citizens" "fellow"  
+[16] "citizens" "fellow"   "citizens"
+
+						</code></pre>
+					</section>
+					<section>
+						<p class="fragment">Keeping only certain keywords and surrounding text: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tokens_select(tokInaug, pattern = keyWords, selection = "keep", window = 3)
+tokens from 5 documents.
+text1 :
+ [1] "experienced" "of"          "her"         "citizens"    "a"           "distrustful" "scrutiny"    "confidence"  "of"          "my"          "fellow"     
+[12] "citizens"    ","           "and"         "have"        "those"       "of"          "my"          "fellow"      "citizens"    "at"          "large"      
+[23] "less"        "affections"  "of"          "its"         "citizens"    "and"         "command"     "the"        
+
+text2 :
+[1] "Fellow"   "citizens" ","        "I"        "am"      
+
+text3 :
+ [1] "are"       "exercised" "by"        "citizens"  "selected"  "at"        "regular"   ","         "and"       "our"       "citizens"  "to"        "be"       
+[14] "more"     
+
+text4 :
+ [1] "Friends"    "and"        "Fellow"     "Citizens"   ":"          "Called"     "upon"       "portion"    "of"         "my"         "fellow"     "citizens"  
+[13] "which"      "is"         "here"       ","          "then"       ","          "fellow"     "citizens"   ","          "unite"      "with"       "confidence"
+[25] "from"       "our"        "fellow"     "citizens"   ","          "resulting"  "not"        "thing"      "more"       ","          "fellow"     "citizens"  
+[37] "-"          "-"          "a"         
+
+text5 :
+ [1] "Proceeding" ","          "fellow"     "citizens"   ","          "to"         "that"       "confidence" "from"       "my"         "fellow"     "citizens"  
+[13] "at"         "large"      ","          "At"         "home"       ","          "fellow"     "citizens"   ","          "you"        "best"       "of"        
+[25] "our"        "mercantile" "citizens"   ","          "it"         "may"        "have"       "said"       ","          "fellow"     "citizens"   ","         
+[37] "that"       "the"        "not"        "mean"       ","          "fellow"     "citizens"   ","          "to"         "arrogate"   "character"  "of"        
+[49] "our"        "citizens"   "at"         "large"      ","          "scene"      ";"          "our"        "fellow"     "citizens"   "looked"     "on"        
+[61] ","          "mass"       "of"         "their"      "fellow"     "citizens"   "with"       "whom"       "they"       "to"         "which"      "my"        
+[73] "fellow"     "citizens"   "have"       "again"      "called"    
+						</code></pre>
+					</section>
+					<section>
+						<h2>Word stemming </h2>
+						<p class="framgent">Combining words that have the same root to reduce the overall different terms in our corpus. </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> txt3 <- "This is a democratic Democracy and democracies are more democratically organised than autocracies."
+<span class="fragment">> tok3 <- tokens(txt3)</span>
+<span class="fragment">> tokens_wordstem(tok3)
+tokens from 1 document.
+text1 :
+ [1] "This"      "is"        "a"         "democrat"  "Democraci" "and"       "democraci" "are"       "more"      "democrat"  "organis"   "than"      "autocraci"
+[14] "."    </span>
+						</code></pre>
+						<p class="fragment">Note that: </p>
+						<ul>
+							<li class="fragment">"democractic" and "democratically" has become "democrat" </li>
+							<li class="fragment">"Democracy" and "democracies" has become "democraci" </li>
+							<li class="fragment">Also note that capital letters remain. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Compound tokens </h2>
+						<p class="fragment">When we are interested in keeping specific word combinations we can compound them into one token. </p>
+						<p class="fragment">In Quanteda we can do that after we have created a tokens object: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> txt4 <- "The United Kingdom is leaving the European Union."
+<span class="fragment">> tok4 <- tokens(txt4, remove_punct = TRUE) </span>
+<span class="fragment">> tokens_compound(tok4, pattern = phrase(c("United Kingdom", "European Union")))
+tokens from 1 document.
+text1 :
+[1] "The"            "United_Kingdom" "is"             "leaving"        "the"            "European_Union" </span>
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>How much should we clean up our data? </h2>
+						<p>Can you think of situations where we would want to: </p>
+						<ul>
+							<li>Remove/not remove punctuation and numbers? </li>
+							<li>Keep special characters? </li>
+							<li>Remove/not remove stopwords? </li>
+							<li>Keep url's in corpus? </li>
+							<li>Not stem our words? </li>
+							<li>Compund specific terms? </li>
+						</ul>
+						<p class="fragment">Unfortunately, no universal advice to rely on here. You have to think about what makes sense in each case. </p>
+					</section>
+				</section>
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Pattern matching </h3>
+					<section>
+						<p>You have seen several functions which use a "pattern" argument now: </p>
+						<ul class="fragment">
+							<li>kwic() (from last week) </li>
+							<li>tokens_compound() </li>
+							<li>tokens_select() </li>
+							<li>...and there are many more. </li>
+						</ul>
+					</section>
+					<section>
+						<p>So far, we have only matched exact words or phrases, but all "pattern" arguments in any Quanteda function accpets the following to describe what to match (ie search for): </p>
+						<ul>
+							<li class="fragment">A string of text to be matched exactly. </li>
+							<li class="fragment">A vector or several word strings (fx. a vector of stopwords)</li>
+							<li class="fragment">One or a list of multi-word expressions, using the phrase() function (fx. when compounding tokens) </li>
+							<li class="fragment">Glob matches. </li>
+							<li class="fragment">Regular expressions (will not be covered in this course though)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Globs</h2>
+						<ul>
+							<li class="fragment">* Matches any number of characters. </li>
+							<li class="fragment">+ Matches any single character. </li>
+						</ul>
+						<p class="fragment">Examples: </p>
+						<ul>
+							<li class="fragment">"friend*" will match friend, firends, firendly, friendship etc. </li>
+							<li class="fragment">"friend+ will match friends, but NOT friend, friendly, or friendship. </li>
+						</ul>
+					</section>
+				</section>
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Dictionary analysis in Quanteda </h3>
+					<section>
+						<h2>A dictionary object in Quanteda </h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
++                           opposition = c("Opposition", "reject", "notincorpus"),
++                           tax = "tax*",
++                           country = c("United_States", "Sweden")))
+<span class="fragment">> dict
+Dictionary object with 4 key entries.
+- [christmas]:
+  - christmas, santa, holiday
+- [opposition]:
+  - opposition, reject, notincorpus
+- [tax]:
+  - tax*
+- [country]:
+  - united_states, sweden </span>
+						</code></pre>
+					</section>
+					<section>
+						<p>An example corpus: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> corp <- corpus(c("My Christmas was ruined by your opposition tax plan.",
++                "Does the United_States or Sweden have more progressive taxation?"))
+						</code></pre>
+					</section>
+					<section>
+						<h2>Looking up dictionary terms on tokens object: </h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tok <- tokens(corp, remove_punct = TRUE)
+<span class="fragment">> tok
+tokens from 2 documents.
+text1 :
+[1] "My"         "Christmas"  "was"        "ruined"     "by"         "your"       "opposition" "tax"        "plan"      
+
+text2 :
+[1] "Does"          "the"           "United_States" "or"            "Sweden"        "have"          "more"          "progressive"   "taxation"     
+</span>
+<span class="fragment">> tokLu <- tokens_lookup(tok, dict)</span>
+<span class="fragment">> tokLu
+tokens from 2 documents.
+text1 :
+[1] "christmas"  "opposition" "tax"       
+
+text2 :
+[1] "country" "country" "tax"    
+</span>
+<span class="fragment">> dfm(tokLu)
+Document-feature matrix of: 2 documents, 4 features (37.5% sparse).
+2 x 4 sparse Matrix of class "dfm"
+       features
+docs    christmas opposition tax country
+  text1         1          1   1       0
+  text2         0          0   1       2</span>
+<span class="fragment">
+> tokLu <- tokens_lookup(tok, dict, exclusive = FALSE)
+> tokLu
+Tokens consisting of 2 documents.
+text1 :
+[1] "My"         "CHRISTMAS"  "was"        "ruined"     "by"         "your"       "OPPOSITION" "TAX"        "plan"      
+
+text2 :
+[1] "Does"        "the"         "COUNTRY"     "or"          "COUNTRY"     "have"        "more"        "progressive" "TAX"        
+</span>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Looking up dictionary terms on a document-feature-matrix:</h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> dfmat <- dfm(corp, remove = stopwords("english"))
+<span class="fragment">> dfmat
+Document-feature matrix of: 2 documents, 11 features (50.0% sparse).
+2 x 11 sparse Matrix of class "dfm"
+       features
+docs    christmas ruined opposition tax plan . united_states sweden progressive taxation ?
+  text1         1      1          1   1    1 1             0      0           0        0 0
+  text2         0      0          0   0    0 0             1      1           1        1 1</span>
+<span class="fragment">> dfm_lookup(dfmat, dict)
+Document-feature matrix of: 2 documents, 4 features (37.5% sparse).
+2 x 4 sparse Matrix of class "dfm"
+       features
+docs    christmas opposition tax country
+  text1         1          1   1       0
+  text2         0          0   1       2</span>
+						</code></pre>
+					</section>
+					
+				</section>
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Dictionary Analysis </h3>
+					<section>
+						<h2>Simple dictionary analysis (recap) </h2>
+						<ul>
+							<li class="fragment">Classify documents into known categories (sentiments/emotions/ideological stances/topics etc.) </li>
+							<li class="fragment">Dictionary consists of a list of words (or tokens) that corresponds to each category. </li>
+							<li class="fragment">In a dictionary we simply count the number of times words from dictionary is used in each document. </li>
+							<li class="fragment">If texts are of different lenghts we might want to normalise the scores though. </li>
+							<li class="fragment">And finally it is crucial that we validate our dictionary. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Your dictionaries </h2>
+					</section>
+					<section>
+						<h2>Use existing dictionaries</h2>
+						<ul>
+							<li class="fragment">Instead of creating our own dictionary, we can use exisiting dictionaries. </li>
+							<li class="fragment">Or use an existing dictionary as a starting point for creating our own. </li>
+							<li class="fragment">However be careful. Dictionaries are very contextual! </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Popular "general" dictionaries: </h2>
+						<ul>
+							<li class="fragment">LIWC - The Linguistic Inquiry and Word Count Program. (Available for a fee: <a href="http://liwc.wpengine.com/">link</a>)</li>
+							<li class="fragment">Lexicoder Sentiment Dictionary (<a href="http://www.snsoroka.com/data-lexicoder/">link</a>)</li>
+							<li class="fragment">Vader Sentiment Dictionary (Open source and free to use: <a href="https://github.com/cjhutto/vaderSentiment ">link</a>)</li>
+							<li class="fragment">SentiStrength (Free for academic use: <a href="http://sentistrength.wlv.ac.uk/">link</a>)</li>
+							<li class="fragment">TensiStrength (Free for academic use: <a href="http://sentistrength.wlv.ac.uk/TensiStrength.html">link</a>)</li>
+							<li class="fragment">Wordstat: Not a dictionary, but list a lot of dictionaries on their website. (<a href="https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/">link</a>)</li>
+							<li class="fragment">Dictionaries from published research. (Many available from the <a href="https://dataverse.harvard.edu/">Havard Dataverse</a>)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Exisiting dictionaries with Quanteda</h2>
+						<p class="fragment">The dictionary() function in R can also be used to import dictionaries saved in the following formats: </p>
+						<ul>
+							<li class="fragment">Wordstat files </li>
+							<li class="fragment">LIWC files </li>
+							<li class="fragment">Yoshikoder files </li>
+							<li class="fragment">Lexicoder files </li>
+							<li class="fragment">YAML files </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Validate dictionary </h2>
+						<p class="fragment">Three key issues we want to be aware of: </p>
+						<ul>
+							<li class="fragment">Validity: Does the categories actually makes sense and represent well the concept we are interested in? </li>
+							<li class="fragment">Recall: Does the dictionary capture all the content related to concept? </li>
+							<li class="fragment">Precision: Does the dictionary only capture the content related to concept? </li>
+						</ul>
+						<p class="fragment">So recall and precision could be measured as: </p>
+						<ul>
+							<li class="fragment">Recall: Proportion of all mentions of concept that is actually captured by our dictionary. </li>
+							<li class="fragment">Precision: Proportion of all the content captured by the dictionary which actually relates to concept of interest. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Approach to build a good dictionary: </h2>
+						<ol>
+							<li class="fragment">Identify "extreme texts" with known positions. </li>
+							<li class="fragment">Use word frequencies from each group to identify words that occur often in one group, but rarely in the other. </li>
+							<li class="fragment">Check these keywords in context to measure precision (possibly just take a random sample)</li>
+							<li class="fragment">Consider need to stem keywords. </li>
+						</ol>
+					</section>
+					<section>
+						
+					</section>
+				</section>
+				
+
+				<section>
+					<h1>Thanks and see you tomorrow!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
