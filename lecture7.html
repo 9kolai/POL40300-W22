@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 7</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 7 by Nikolai Gad</p>
+					<p>München, 30. November 2022</p>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Collecting data for computational text analysis </li>
+						<li>Loading text data into R </li>
+						<li>Dictionary analysis w Quanteda </li>
+						<li>(Sparsity/density of document-feature-matrices) </li>
+					</ul>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>
+					<section>
+						<h1>Exam date settled! </h1>
+						<h2>Wednesday 22nd February 2022 (13.00-14.30) </h2>
+						<p class="fragment">Exact exam format still to be confirmed. </p>
+					</section>
+					
+					<section>
+						<h1>No tutorial class this week </h1>
+						</br>
+						<h1 class="fragment">No tutorial class on 15th December </h1>
+						<table class="fragment">
+							<tr><th>Lecture</th><th>Tutorial</th></tr>
+							<tr><td>Wed, 30/11</td><td> - </td></tr>
+							<tr><td>Wed, 7/12</td><td>Thu, 8/12</td></tr>
+							<tr><td>Wed, 14/12</td><td>-</td></tr>
+							<tr class="fragment"><td>(Wed, 21/12)</td><td>-</td></tr>
+						</table>
+					</section>
+					
+					<section>
+						<h1>Updated course plan/curriculum TBA</h1>
+						<ul>
+							<li class="fragment">Who will be able to attend class on 21/12? </li>
+							<li class="fragment">How many are familiar with "statistical significance"?</li>
+							<li class="fragment">How many are familiar with chi2 tests?</li>
+						</ul>
+					</section>
+				</section>
+
+
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Collecting data for computational text analysis</h3>
+					<section>
+						<p style="font-size: 1.5em">Benoit, Kenneth, Thomas Bräuninger, and Marc Debus. 2009. ‘Challenges for Estimating Policy Preferences: Announcing an Open Access Archive of Political Documents’. <span style="font-style: italic;">German Politics.</span></p>
+						<p class="fragment">Describes two challenges with data for computational text analysis: </p>
+						<ol>
+							<li class="fragment">Selecting texts (sampling data) </li>
+							<li class="fragment">Quality of source data </li>
+						</ol>
+					</section>
+					<section>
+						<h2>Three examples to illustrate the importance of data selection and quality </h2>
+						<p class="fragment">All the examples apply the Wordscores scaling technique: </p>
+						<ul>
+							<li class="fragment">A supervised (machine learning) model to estimate positions of texts on dimensions, identified a priori. </li>
+							<li class="fragment">Requires well known reference scores for a training set of texts. </li>
+							<li class="fragment">Once the model has been "trained" on these texts, it can be used to estimate positions on remaining texts. </li>
+							<li class="fragment">Developed to estimate policy positions of political actors. </li>
+							<li class="fragment">Used a lot in political science, but it also works for other purposes. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Example 1) Misclassified German election manifestos </h2>
+						<ul>
+							<li class="fragment">CDU's election manifesto for the 1965 federal election was titled "Düsseldorf Declaration of the CDU"</li>
+							<li class="fragment">However, the CMP dataset also included comments made by a number of party officials that was published with the declaration. </li>
+							<li class="fragment">The declaration itself was only 599 words long, but including the comments it was 16.011 words long. </li>
+							<li class="fragment">So should the comments be included or not in the analysis? And does it make any difference? </li>
+						</ul>
+						<img src="pic/lecture7/Fig1.svg" class="fragment" />
+					</section>
+					<section>
+						<h2>Example 2) Eastern and Western German Green Parties the same? </h2>
+						<ul>
+							<li class="fragment">Using election manifestos from the 1990 and 2002 federal elections as reference (ie training) texts. </li>
+							<li class="fragment">And scored them with data from Laver & Hunt's 1989 expert survey about party positions. </li>
+							<li class="fragment">However, Eastern and Western German Green parties ran separately in the 1990 election with individual manifestos. </li>
+							<li class="fragment">So which manifesto should be used for reference? And does it make a difference? </li>
+						</ul>
+						<img src="pic/lecture7/Fig2.svg" class="fragment" />
+					</section>
+					<section>
+						<h2>Example 3) The effect of "junk text" in election manifestos. </h2>
+						<ul>
+							<li class="fragment">Data taken from the Comparative Manifesto Project. </li>
+							<li class="fragment">...which had altered the manifestos for the purpose of human coding (line numbers, duplicates of sections that needed to be coded several times etc.) </li>
+						</ul>
+						<img src="pic/lecture7/Fig3.svg" class="fragment" />
+						<ul>
+							<li class="fragment">Generally no drastic changes, except from FDP and PDS. </li>
+							<li class="fragment">However, this can still have crucial implications for analysis, exemplified by De Swan's theory of minimal ideological range coalitions. (CDU/SPD coalition expected vs. CDU/FDP coalition). </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Three things to consider when collecting text data for computational analysis: </h2>
+						<ul>
+							<li class="fragment">Texts must contain sincere information about what we want to extract/measure. </li>
+							<li class="fragment">Comparability of texts. </li>
+							<li class="fragment">Possible errors in texts: misspellings, missing pages, failed scans. </li>
+						</ul>
+						<p class="fragment">Aplies to all kinds of text analysis, but can be particularly tricky when analysing large quantities of texts computationally. </p>
+						<p class="fragment">This also illustrates the importance of human readings of documents in addition to computational methods. </p>
+						<p class="fragment">Suggested solution in paper: A database of high quality text data with standardised formatting, suitable for computational analysis - polidoc.net</p>
+					</section>
+				</section>
+				
+				
+				
+				
+								
+				
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Dictionary Analysis </h3>
+					<section>
+						<h2>Simple dictionary analysis (recap) </h2>
+						<ul>
+							<li class="fragment">Classify documents into known categories (sentiments/emotions/ideological stances/topics etc.) </li>
+							<li class="fragment">Dictionary consists of a list of words (or tokens) that corresponds to each category. </li>
+							<li class="fragment">In a dictionary we simply count the number of times words from dictionary is used in each document. </li>
+							<li class="fragment">If texts are of different lenghts we might want to normalise the scores though. </li>
+							<li class="fragment">And finally it is crucial that we validate our dictionary. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Your dictionaries </h2>
+					</section>
+					<section>
+						<h2>Use existing dictionaries</h2>
+						<ul>
+							<li class="fragment">Instead of creating our own dictionary, we can use exisiting dictionaries. </li>
+							<li class="fragment">Or use an existing dictionary as a starting point for creating our own. </li>
+							<li class="fragment">However be careful. Dictionaries are very contextual! </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Popular "general" dictionaries: </h2>
+						<ul>
+							<li class="fragment">LIWC - The Linguistic Inquiry and Word Count Program. (Available for a fee: <a href="http://liwc.wpengine.com/">link</a>)</li>
+							<li class="fragment">Lexicoder Sentiment Dictionary (<a href="http://www.snsoroka.com/data-lexicoder/">link</a>)</li>
+							<li class="fragment">Vader Sentiment Dictionary (Open source and free to use: <a href="https://github.com/cjhutto/vaderSentiment ">link</a>)</li>
+							<li class="fragment">SentiStrength (Free for academic use: <a href="http://sentistrength.wlv.ac.uk/">link</a>)</li>
+							<li class="fragment">TensiStrength (Free for academic use: <a href="http://sentistrength.wlv.ac.uk/TensiStrength.html">link</a>)</li>
+							<li class="fragment">Wordstat: Not a dictionary, but list a lot of dictionaries on their website. (<a href="https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/">link</a>)</li>
+							<li class="fragment">Dictionaries from published research. (Many available from the <a href="https://dataverse.harvard.edu/">Havard Dataverse</a>)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Exisiting dictionaries with Quanteda</h2>
+						<p class="fragment">The dictionary() function in R can also be used to import dictionaries saved in the following formats: </p>
+						<ul>
+							<li class="fragment">Wordstat files </li>
+							<li class="fragment">LIWC files </li>
+							<li class="fragment">Yoshikoder files </li>
+							<li class="fragment">Lexicoder files </li>
+							<li class="fragment">YAML files </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Validate dictionary </h2>
+						<p class="fragment">Three key issues we want to be aware of: </p>
+						<ul>
+							<li class="fragment">Validity: Does the categories actually makes sense and represent well the concept we are interested in? </li>
+							<li class="fragment">Recall: Does the dictionary capture all the content related to concept? </li>
+							<li class="fragment">Precision: Does the dictionary only capture the content related to concept? </li>
+						</ul>
+						<p class="fragment">So recall and precision could be measured as: </p>
+						<ul>
+							<li class="fragment">Recall: Proportion of all mentions of concept that is actually captured by our dictionary. </li>
+							<li class="fragment">Precision: Proportion of all the content captured by the dictionary which actually relates to concept of interest. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Approach to build a good dictionary: </h2>
+						<ol>
+							<li class="fragment">Identify "extreme texts" with known positions. </li>
+							<li class="fragment">Use word frequencies from each group to identify words that occur often in one group, but rarely in the other. </li>
+							<li class="fragment">Check these keywords in context to measure precision (possibly just take a random sample)</li>
+							<li class="fragment">Consider need to stem keywords. </li>
+						</ol>
+					</section>
+					<section>
+						
+					</section>
+				</section>
+
+
+
+
+
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Dictionary analysis in Quanteda </h3>
+					<section>
+						<h2>A dictionary object in Quanteda </h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
++                           opposition = c("Opposition", "reject", "notincorpus"),
++                           tax = "tax*",
++                           country = c("United_States", "Sweden")))
+<span class="fragment">> dict
+Dictionary object with 4 key entries.
+- [christmas]:
+  - christmas, santa, holiday
+- [opposition]:
+  - opposition, reject, notincorpus
+- [tax]:
+  - tax*
+- [country]:
+  - united_states, sweden </span>
+						</code></pre>
+					</section>
+					<section>
+						<p>An example corpus: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> corp <- corpus(c("My Christmas was ruined by your opposition tax plan.",
++                "Does the United_States or Sweden have more progressive taxation?"))
+						</code></pre>
+					</section>
+					<section>
+						<h2>Looking up dictionary terms on tokens object: </h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tok <- tokens(corp, remove_punct = TRUE)
+<span class="fragment">> tok
+tokens from 2 documents.
+text1 :
+[1] "My"         "Christmas"  "was"        "ruined"     "by"         "your"       "opposition" "tax"        "plan"      
+
+text2 :
+[1] "Does"          "the"           "United_States" "or"            "Sweden"        "have"          "more"          "progressive"   "taxation"     
+</span>
+<span class="fragment">> tokLu <- tokens_lookup(tok, dict)</span>
+<span class="fragment">> tokLu
+tokens from 2 documents.
+text1 :
+[1] "christmas"  "opposition" "tax"       
+
+text2 :
+[1] "country" "country" "tax"    
+</span>
+<span class="fragment">> dfm(tokLu)
+Document-feature matrix of: 2 documents, 4 features (37.5% sparse).
+2 x 4 sparse Matrix of class "dfm"
+       features
+docs    christmas opposition tax country
+  text1         1          1   1       0
+  text2         0          0   1       2</span>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Looking up dictionary terms on a document-feature-matrix:</h2>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> dfmat <- dfm(corp, remove = stopwords("english"))
+<span class="fragment">> dfmat
+Document-feature matrix of: 2 documents, 11 features (50.0% sparse).
+2 x 11 sparse Matrix of class "dfm"
+       features
+docs    christmas ruined opposition tax plan . united_states sweden progressive taxation ?
+  text1         1      1          1   1    1 1             0      0           0        0 0
+  text2         0      0          0   0    0 0             1      1           1        1 1</span>
+<span class="fragment">> dfm_lookup(dfmat, dict)
+Document-feature matrix of: 2 documents, 4 features (37.5% sparse).
+2 x 4 sparse Matrix of class "dfm"
+       features
+docs    christmas opposition tax country
+  text1         1          1   1       0
+  text2         0          0   1       2</span>
+						</code></pre>
+					</section>
+					
+				</section>
+				
+				
+				
+				
+
+				<section>
+					<h1>Thanks and see you next week!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
