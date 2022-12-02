@@ -1,0 +1,541 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 8</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+		<!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Draw the pie chart for Sarah's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawSarahChart);
+
+      // Draw the pie chart for the Anthony's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawAnthonyChart);
+
+      // Callback that draws the pie chart for Sarah's pizza.
+      function drawSarahChart() {
+
+        // Create the data table for Sarah's pizza.
+        var cons = 1;
+        var lab = 1; 
+        var lib = 1;
+        var green = 1; 
+        var ukip = 1; 
+        var snp = 1;
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Party');
+        data.addColumn('number', 'Votes');
+        data.addRows([
+          ['Orange = CDU/CSU', cons],
+          ['Red = SPD', lab],
+          ['Yellow = FDP', lib],
+          ['Green = Grünen', green],
+          ['5 = AfP', ukip], 
+          ['Purple = Die Linke', snp]
+        ]);
+
+        // Set options for Sarah's pie chart.
+        var options = {'title':'How many people voted for each party?',
+                       'width':1000,
+                       'height':500, 
+                       'animation':{
+                            'duration':500, 
+                            'easing': 'out',}, 
+                       'vAxis':{
+//                            'minValue':0,
+                            'viewWindow':{
+                                'min':0,},
+//                            'viewWindowMode':'maximized',
+                            },
+                       };
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+
+        function selectHandler() {
+          var selectedItem = chart.getSelection()[0];
+          if (selectedItem) {
+            var party = data.getValue(selectedItem.row, 0);
+            var vote = data.getValue(selectedItem.row, 1);
+            data.setValue(selectedItem.row, 1, vote+1);
+	        
+//            if (party == '1 = Conservative') {
+//            	cons +=1;
+//	        alert('The user selected ' + party + cons );
+//	        data.setValue(selectedItem.row, 1, vote+1);
+//	    }
+//	    else if (party == '2 = Labour') {
+//	    }
+            chart.draw(data, options);
+          }
+        }
+        google.visualization.events.addListener(chart, 'select', selectHandler); 
+        chart.draw(data, options);
+      }
+
+      // Callback that draws the pie chart for Anthony's pizza.
+      function drawAnthonyChart() {
+
+        // Create the data table for Anthony's pizza.
+       var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Party');
+        data.addColumn('number', 'Votes');
+        data.addRows([
+          ['Orange = CDU/CSU', 990],
+          ['Red = SPD', 3],
+          ['Yellow = FDP', 1],
+          ['Green = Grünen', 1],
+          ['5 = AfP', 3], 
+          ['Purple = Die Linke', 2]
+        ]);
+
+        // Set options for Anthony's pie chart.
+        var options = {'title':'How many people voted for each party?',
+                       'width':1000,
+                       'height':500, 
+                       'animation':{
+                            'duration':500, 
+                            'easing': 'out',}, 
+                       'vAxis':{
+//                            'minValue':0,
+                            'viewWindow':{
+                                'min':0,},
+//                            'viewWindowMode':'maximized',
+                            },
+                       };
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart-ex_div'));
+        chart.draw(data, options);
+      }
+    </script>
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 8 by Nikolai Gad</p>
+					<p>München, 7. December 2022</p>
+				</section>
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>A (very) brief introduction to statistical inference and statisical significance </li>
+						<li>Statistical inference and computational text analysis </li>
+						<li>An example: Keyness analysis</li>
+						
+					</ul>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Statistical inference </h3>
+					<section>
+						<p class="fragment">Deducing properties of a population based on a sample. </p>
+						<p class="fragment">Ie. describe a whole population based on a sample from that population. </p>
+						<h3 class="fragment" style="color: rgb(0,101,189)">Statistical significance </h3>
+						<p class="fragment">A result is statistically significatnt when it is unlikely to occur randomly or by chance (but instead likely to be attributed to a non-random real difference). </p>
+						
+						<h4 class="fragment">Sampling strategies are essential to calculate this! </h4>
+					</section>
+					<section>
+						<p>But first a bit of </p>
+						<h3>Terminology (I): </h3>
+						<ul>
+							<li class="fragment"><em>Population (N):</em> All the subjects (people/obeservations/organisations/texts etc) we are interested in. </li>
+							<li class="fragment"><em>Sample (n):</em> A subset of the population that we collect data about. </li>
+							<li class="fragment"><em>Parameter:</em> A nummerical proporty of the population that is unknown to us, but that we want to know. </li>
+							<li class="fragment"><em>Sample statistic:</em> A nummerical property of our sample (which is known to us). </li>
+							<li class="fragment"><em>(Point) Estimate:</em> An estimate of the parameter we are interested in (ie. our "best guess" of the population parameter). This is usually the sample statistic. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Sampling strategies </h3>
+						<p class="fragment">Random sampling the gold standard (but others can also work). </p>
+						<ul class="fragment">
+							<li>Simple random sampling </li>
+							<li>Systematic random sampling </li>
+							<li>Stratified sampling </li>
+							<li>Cluster sampling </li>
+							<li>Multistage sampling </li>
+						</ul>
+						<h3 class="fragment">So what does random mean? </h3>
+						<p class="fragment">In a random sample, each subject from a population has the same probability of being sampled. </p>
+					</section>
+					<section>
+						<p>So if we know that every subject we are interested in (in the population) had an equal probability of being part of our sample, we can calculate how likely we are to get a result under certain conditions. </p>
+						<h2 class="fragment">A basic illustration: </h2>
+						<p class="fragment">Imagine a huge bag of m&m's, where each m&m represents a person. </p>
+						<p class="fragment">And the colour of the m&m represents the party they would vote for. </p>
+					</section>
+										<section>
+						<!--Div that will hold the bar chart-->
+						<div id="chart_div"></div>
+					</section>
+					<section>
+						<!--Div that will hold the bar chart-->
+						<div id="chart-ex_div"></div>
+					</section>				
+					
+					<section>
+						<h3>The normal distribution </h3>
+						<img src="pic/lecture10/Probability_distribution_functions_for_normal_distribution.svg" />
+						<ul>
+							<li class="fragment">Mean of all sample proportions will centre around the real population parameter. </li>
+							<li class="fragment">And sample proportions will occur less often the further we move away from the population parameter. </li>
+							<li class="fragment">However this is not linear, but bell shaped. </li>
+						</ul>
+					</section>
+					<section data-background-iframe="https://openintro.shinyapps.io/CLT_prop/" data-background-interactive>
+					</section>
+					<section>
+						<h3>Terminology (II): </h3>
+						<ul>
+							<li class="fragment"><em>Sample distribution:</em> Frequency distribution of sample. </li>
+							<li class="fragment"><em>Standard deviation:</em> The mean distance of each obserrvation from the mean of all observations (in the sample/population). </li>
+							<li class="fragment"><em>Sampling distribution:</em> The distrbution of a sample statistic (fx. mean or proportion) from several (random) samples of the same population. </li>
+							<li class="fragment"><em>Standard error:</em> The standard deviation of the sampling distribution. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Central Limit Theorem </h3>
+						<blockquote cite="Agresti, A., & Finlay, B. (2009). Statistical methods for the social sciences (Fourth edition). Upper Saddle River, N.J.: Pearson Prentice Hall." class="fragment" data-fragment-index="1">For random sampling with a large sample size n, the sampling distribution of the sample mean is approximately a normal distribution.</blockquote>
+						<cite class="fragment" data-fragment-index="1" style="font-size: small; font-style: italic;">Agresti, A., & Finlay, B. (2009). Statistical methods for the social sciences (Fourth edition). Upper Saddle River, N.J.: Pearson Prentice Hall.</cite>
+					</section>					
+					<section data-background-iframe="https://gallery.shinyapps.io/CLT_mean/" data-background-interactive>
+					</section>
+					<section>
+						<h3>Probabilities and sampling distributions </h3>
+						<p class="fragment">So now that we know that the sampling distributions of the mean and proportions are normally distributed, we can use this information to calculate the exact probability of getting a certain sample statistic. </p>
+						<p class="fragment">This depends on two things: </p>
+						<ul>
+							<li class="fragment">The population parameter </li>
+							<li class="fragment">The sample size </li>
+							<li class="fragment">(But not the population size) </li>
+						</ul>
+					</section>
+					<section data-background-iframe="https://openintro.shinyapps.io/dist_calc/" data-background-interactive>
+					</section>
+					
+					<section>
+						<h3>Hypotheses and null hypotheses</h3>
+						<ul>
+							<li class="fragment">Hypothesis: A testable claim about a statistic (or the relation between more statistics)</li>
+							<li class="fragment">Null hypothesis: A claim that we want to reject in order to test our hypothesis. </li>
+							<li class="fragment">p-value: The likelihood that a null-hypothesis is true (so we want this to be low). </li>
+							<li class="fragment">alpha-level: How unlikely we want the null hypothesis to be in order to reject it (in social sciences usually 0,05) </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Example</h3>
+						<ul>
+							<li class="fragment">Hypothesis: CDU voters tend to be older than SPD voters - mean age of CDU voters > mean age of SPD voters.  </li>
+							<li class="fragment">Null hypothesis: mean age of CDU voters = mean age of SPD voters </li>
+							<li class="fragment">If we ask a <em>random</em> sample of voters about their age and what they voted, we can calculate the mean ages of each group. This is our estimate. </li>
+							<li class="fragment">And then we can calculate how likely we are to get this result, if in fact the mean age of the two groups are the same for the whole population. This is the p-value. </li>
+							<li class="fragment">So if the p-value is less than 0,05 it means that it is less than 5% likely to get our result by taking a random sample of respondents from a population where the mean age of the two groups are actually the same. </li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Examples of null hypotheses: </h3>
+						<ul>
+							<li class="fragment">mean = value </li>
+							<li class="fragment">proportion = value </li>
+							<li class="fragment">mean/proportion of one group = mean/proportion of another group </li>
+							<li class="fragment">mean/propotion of one variable = mean/proportion of another variable </li>
+							<li class="fragment">A correlation or regression coefficient != 0 (ie. there is a relationship between two numerical variables) </li>
+						</ul>
+					</section>
+					<section>
+						<h3>A specific example: The chi2 test of independence</h3>
+						<p class="fragment">A test of independence between two categorical variables</p>
+						<ul>
+							<li class="fragment"><em>Hypothesis</em>: The two variables are dependent. </li>
+							<li class="fragment"><em>Null hypothesis</em>: The two variables are independent. </li>
+						</ul>
+						<p class="fragment">If variables are independent (null hypothesis) we would not expect any proportional difference between groups on each variable. </p>
+					</section>
+					<section>
+						<h3>A specific example: The chi2 test of independence</h3>
+						<p class="fragment" data-fragment-index="1">Illustration: </p>
+						<table class="fragment" data-fragment-index="2">
+							<thead>
+								<tr>
+									<th rowspan="2">Gender</th>
+									<th colspan="3" style="text-align: center">Party identification </th>
+									<th rowspan="2">Total </th>
+								</tr>
+								<tr>
+									<th>Democrat </th>
+									<th>Independent </th>
+									<th>Republican </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Female </th>
+									<td>573 <span class="fragment" data-fragment-index="3">(38%)</span></td>
+									<td>516 <span class="fragment" data-fragment-index="3">(34%)</span></td>
+									<td>422 <span class="fragment" data-fragment-index="3">(28%)</span></td>
+									<td>1511 <span class="fragment" data-fragment-index="3">(100%)</span> </td>
+								</tr>
+								<tr>
+									<th>Male </th>
+									<td>386 <span class="fragment" data-fragment-index="3">(31%)</span></td>
+									<td>475 <span class="fragment" data-fragment-index="3">(38%)</span></td>
+									<td>399 <span class="fragment" data-fragment-index="3">(32%)</span></td>
+									<td>1200 <span class="fragment" data-fragment-index="3">(100%)</span></td>
+								</tr>
+								<tr>
+									<th>Total </th>
+									<td>959 <span class="fragment" data-fragment-index="4">(35%)</span></td>
+									<td>991 <span class="fragment" data-fragment-index="4">(36%)</span></td>
+									<td>821 <span class="fragment" data-fragment-index="4">(29%)</span></td>
+									<td>2771 <span class="fragment" data-fragment-index="4">(100%)</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<table class="fragment">
+							<thead>
+								<tr>
+									<th rowspan="2">Gender</th>
+									<th colspan="3" style="text-align: center">Party identification </th>
+									<th rowspan="2">Total </th>
+								</tr>
+								<tr>
+									<th>Democrat </th>
+									<th>Independent </th>
+									<th>Republican </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Female </th>
+									<td>573 (522,9)</td>
+									<td>516 (540,4)</td>
+									<td>422 (447,7)</td>
+									<td>1511</td>
+								</tr>
+								<tr>
+									<th>Male </th>
+									<td>386 (436,1)</td>
+									<td>475 (450,6)</td>
+									<td>399 (373,3)</td>
+									<td>1200 </td>
+								</tr>
+								<tr>
+									<th>Total </th>
+									<td>959</td>
+									<td>991</td>
+									<td>821</td>
+									<td>2771</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="fragment"><em>Expected frequencies</em> in parantheses. </p>
+						<p class="fragment">Based on the differences between expected frequencies and observed fequencies, we can calculate our test statistic, chi2 with a formular. </p>
+						<p class="fragment">Chi2 = 16,2 and df = 2 </p>
+						<p class="fragment">Looking up these numbers, we get a p-value < 0,001 </p>
+						<p class="fragment">So we can reject our null hypothesis because there is less than 5% probability that we would get our results if it was true. Ie. we reject that the two variables are independent and accept that there is some relationship. </p>
+					</section>
+					<section>
+						<h3></h3>
+					</section>
+					<section>
+						<p>So to recap the most important points to remember: </p>
+						<ul>
+							<li class="fragment">There a many different tests of statistical significance, used to test different types of null hypotheses. </li>
+							<li class="fragment">Any test of statistical significance will (among other things) result in a p-value. </li>
+							<li class="fragment">This p-value is the probability of randomly getting our result <em>IF</em> the null hypothesis is true. </li>
+							<li class="fragment">If this value is low (usually below 0,05), we can reject the null hypothesis. </li>
+							<li class="fragment">So it is crucial to always understand what the null hypothesis is! </li>							
+						</ul>
+					</section>
+					<section>
+						<h3 class="fragment">But be aware: Statistical significance does not (necesarrily) imply substantial difference. </h3>
+						<p class="fragment">A bit simplified, we can say that p-values depend on: </p>
+						<ul>
+							<li class="fragment">How much our observation differs from the null hypothesis. </li>
+							<li class="fragment">The sample size </li>
+						</ul>
+						<p class="fragment">The implications of this is: </p>
+						<ul>
+							<li class="fragment">Substantial differences might not be detected as statistical significant if sample size is too small. </li>
+							<li class="fragment">Very small differences can be statistically significant for large samples. </li>
+							<li class="fragment">So we never reject our actual hypothesis (contrary to the null hypothesis)! At most we say we have not found enough evidence to support it. </li>
+							<li class="fragment">And always consider the size of sample statistic as well as it's significance! </li>
+						</ul>
+					</section>					
+				</section>
+
+
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Statistical inference and computational text analysis </h3>
+					<h3 class="fragment">Is statistical inference necesarry with Big Data? </h3>
+					<h3 class="fragment">Does statistical significance matter when we do not work with sample data? </h3>
+					<p class="fragment">Most often yes! </p>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0, 101, 189)">Keyness: Relative frequency analysis </h3>
+					<section>
+						<p class="fragment">So far we have mostly counted words in different ways and calculated descriptive statistics. </p>
+						<p class="fragment">But how do we compare these counts best? </p>
+						<h1 class="fragment">Relative frequency analysis: Keyness</h1>
+					</section>
+					<section>
+						<h3>A bit of terminology: </h3>
+						<p class="fragment">Instead of just counting the frequency of words, we analyse how much more or less words occur in one text compared to another (set of) text(s). </p>
+						<ul>
+							<li class="fragment">A word that occurs more often in a text than would be expected by chance alone is a <em>keyword</em>, </li>
+							<li class="fragment">because the word is <em>key</em> to that text. </li>
+							<li class="fragment">The text of interest is our <em>target text(s)</em>, </li>
+							<li class="fragment">while the texts we compare it to, we call the <em>reference group</em>. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Example</h3>
+						<p>Let us calculate which words Donald Trump used significantly more or less than other presidents in their inaugural speeches. </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> TrumpKeyn <- textstat_keyness(inaugDfm, "2017-Trump")
+<span class="fragment">> head(TrumpKeyn)
+   feature      chi2 p n_target n_reference
+1    obama 188.67503 0        3           0
+2 trillion 101.58383 0        2           0
+3  america  97.09513 0       19         223
+4  everyon  96.59539 0        4           7
+5      job  80.80780 0        5          16
+6     back  72.00644 0        6          28</span>
+						</code></pre>
+					</section>
+					<section>
+						<h3>Keyness is actually just a chi2 test of independence for each word:</h3>
+						<table class="fragment" data-fragment-index="1">
+							<thead>
+								<tr>
+									<th></th>
+									<th>"america" </th>
+									<th>All other words </th>
+									<th>Total words </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Target: Trump </th>
+									<td>18 <span class="fragment" data-fragment-index="3">(1,1%)</span></td>
+									<td>1642 <span class="fragment" data-fragment-index="3">(98,9%)</span></td>
+									<td>1660 <span class="fragment" data-fragment-index="3">(100%)</span></td>
+								</tr>
+								<tr>
+									<th>Reference: All other inaugural speeches </th>
+									<td>166 <span class="fragment" data-fragment-index="3">(0,1%)</span></td>
+									<td>147319 <span class="fragment" data-fragment-index="3">(99,9%)</span></td>
+									<td>147485 <span class="fragment" data-fragment-index="3">(100%)</span></td>
+								</tr>
+								<tr>
+									<th>Total </th>
+									<td>184 <span class="fragment" data-fragment-index="2">(0,1%)</span></td>
+									<td>148961 <span class="fragment" data-fragment-index="2">(99,9%)</span></td>
+									<td>149145 <span class="fragment" data-fragment-index="2">(100%)</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<h3>Size of differences in word use</h3>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> TrumpKeyn$prop_target <- TrumpKeyn$n_target / sum(TrumpKeyn$n_target) * 100
+> TrumpKeyn$prop_target <- TrumpKeyn$n_target / sum(TrumpKeyn$n_target) * 100
+> TrumpKeyn$prop_reference <- TrumpKeyn$n_reference / sum(TrumpKeyn$n_reference) * 100
+> head(TrumpKeyn)
+   feature      chi2 p n_target n_reference prop_target prop_reference
+1    obama 188.67503 0        3           0   0.4195804     0.00000000
+2 trillion 101.58383 0        2           0   0.2797203     0.00000000
+3  america  97.09513 0       19         223   2.6573427     0.34288702
+4  everyon  96.59539 0        4           7   0.5594406     0.01076327
+5      job  80.80780 0        5          16   0.6993007     0.02460176
+6     back  72.00644 0        6          28   0.8391608     0.04305308
+						</code></pre>
+					</section>
+					<section>
+						<h3>Size of differences in word use</h3>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> TrumpKeyn$rel_diff <- TrumpKeyn$prop_target / TrumpKeyn$prop_reference
+> head(TrumpKeyn)
+   feature      chi2 p n_target n_reference prop_target prop_reference  rel_diff
+1    obama 188.67503 0        3           0   0.4195804     0.00000000       Inf
+2 trillion 101.58383 0        2           0   0.2797203     0.00000000       Inf
+3  america  97.09513 0       19         223   2.6573427     0.34288702  7.749907
+4  everyon  96.59539 0        4           7   0.5594406     0.01076327 51.976823
+5      job  80.80780 0        5          16   0.6993007     0.02460176 28.424825
+6     back  72.00644 0        6          28   0.8391608     0.04305308 19.491309
+						</code></pre>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> tail(TrumpKeyn)
+       feature      chi2          p n_target n_reference prop_target prop_reference  rel_diff
+5512 constitut -2.256589 0.13304681        0         289   0.0000000      0.4443693 0.0000000
+5513        us -2.261720 0.13260670        2         503   0.2797203      0.7734178 0.3316678
+5514     shall -2.548885 0.11037216        0         316   0.0000000      0.4858847 0.0000000
+5515       may -2.842509 0.09180079        0         343   0.0000000      0.5274002 0.0000000
+5516      upon -3.148159 0.07601267        0         371   0.0000000      0.5704533 0.0000000
+5517       can -3.549240 0.05957275        1         486   0.1398601      0.7472784 0.2071593
+						</code></pre>
+					</section>
+				</section>
+				
+
+				<section>
+					<h1>Thanks and see you tomorrow!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
