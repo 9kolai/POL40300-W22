@@ -1,0 +1,580 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 10</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 10 by Nikolai Gad</p>
+					<p>München, 21. December 2022</p>
+				</section>
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Subsetting and trimmings dfm's</li>
+						<li>Loading text data into R </li>
+					</ul>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>
+					<section>
+						
+					</section>
+					
+				</section>
+
+
+
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Subsetting and trimming dfm's </h3>
+					<section>
+						<h3>Typical mistake </h3>
+						<p class="fragment">Often students refer to variable names in subset functions with double quotes: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+inaugDfmPostWWII <- dfm_subset(inaugDfm, "Year" >= 1945)
+						</code></pre>
+						<p class="fragment">Never use double quotes when referring to a variable name in dfm_subset()! </br> (or the normal subset() function for that matter) </p>
+						<p class="fragment">Be particular aware of this, since it will not through an error and might look like it works!</p>
+						<p class="fragment">The correct subsetting should look like this: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+inaugDfmPostWWII <- dfm_subset(inaugDfm, Year >= 1945)
+						</code></pre>
+						<p class="fragment">So what are the consequences of using double quotes?</p>
+					</section>
+					<section>
+						<h3>Example corpus: </h3>
+						<table>
+							<tr>
+								<th>Doc ID: </th>
+								<th>Docvar1: </th>
+								<th>Text: </th>
+							</tr>
+							<tr>
+								<td>Elephant </td>
+								<td>Wild animal</td>
+								<td>I am an elephant. </td>
+							</tr>
+							<tr>
+								<td>Lion </td>
+								<td>Wild animal</td>
+								<td>I am a lion. </td>
+							</tr>
+							<tr>
+								<td>Dog</td>
+								<td>Pet animal</td>
+								<td>I am a dog. </td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td>dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Dog: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>3</td>
+								<td>3</td>
+								<td>1</td>
+								<td>1</td>
+								<td>3</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_subset(dfm_animals, Docvar1 == "Wild animal")
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td>dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr style="color:red;" class="blink">
+								<th>Dog: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>3</td>
+								<td>3</td>
+								<td>1</td>
+								<td>1</td>
+								<td>3</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_subset(dfm_animals, Docvar1 == "Wild animal")
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td>dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>2</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_subset(dfm_animals, Docvar1 == "Wild animal")
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td style="color:red">dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td style="color:red">0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td style="color:red">0</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>2</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td style="color:red">0</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_trim(dfmWild, min_termfreq = 1)
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>2</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+						</table>
+					</section>
+				</section>
+				
+				
+			
+
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Data storage formats </h3>
+					<section>
+						<p class="fragment">So far we have mainly used data that was stored in a csv-file: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> df <- read.csv("PoliticalAds.csv")
+						</code></pre>
+						<p class="fragment">And last week you saw how to load an R object stored in a .RDS file: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> corp <- readRDS("data_corpus_sampletweets.rds")
+						</code></pre>
+						<p class="fragment">However, often the text data we are interested in, is not stored in either of these formats. </p>
+						<h3 class="fragment">The readtext package for R! </h3>
+					</section>
+					<section>
+						<h2>The readtext package </h2>
+						<ul>
+							<li>Can load text data from many different formats. </li>
+							<li>Creates dataframes that are compatible with Quanteda (text is stored in a column named "text")</li>
+							<li>Can handle different encodings. </li>
+						</ul>
+						<p class="fragment">Csv files can also be loaded with the readtext package: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> df <- readtext("csv/inaugCorpus.csv", text_field = "texts")
+<span class="fragment">> df <- readtext("tsv/dailsample.tsv", text_field = "speech")</span>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Reading text data from multiple text files </h2>
+						<p class="fragment">We can use glob characters to define all or several txt files to be loaded at once: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> df <- readtext("txt/EU_manifestos/*.txt")
+<span class="fragment">> df <- readtext("txt/UDHR/*", encoding = "utf-8")</span>
+						</code></pre>
+						<p class="fragment">These text files are now stored in a dataframe with all the texts stored in a column named "text" and the filenames stored in a column named "doc_id". </p>
+						<p class="fragment">However, no docvars are included. We can take information from the filenames and automatically store that as docvars: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> df <- readtext("txt/EU_manifestos/*.txt",
++                    docvarsfrom = "filenames", 
++                    docvarnames = c("unit", "context", "year", "language", "party"),
++                    dvsep = "_", 
++                    encoding = "ISO-8859-1")
+						</pre></code>
+					</section>
+					<section>
+						<h2>JSON data (JavaScript Object Notation) </h2>
+						
+						<p class="fragment">An open standard file format for storing data in a text file. </p>
+						<p class="fragment">Derived from JavaScript to store data objects created in JavaScript (similar to how we can store R objects in an .RDS file)</p>
+						<p class="fragment">JSON stores data in value-attribute pairs and vectors (called arrays in JSON/JavaScript, but they are the same). </p>
+						<p class="fragment">An example: </p>
+						<pre><code class ="json hljs fragment" data-trim>
+{
+ "created_at": "Wed Oct 10 20:19:24 +0000 2018",
+ "id": 1050118621198921728,
+ "id_str": "1050118621198921728",
+ "text": "To make room for more expression, we will now count all emojis as equal—including those with gender‍‍‍ ‍‍and skin t… https://t.co/MkGjXf9aXm",
+ "user": {},  
+ "entities": {}
+}						</code></pre>
+					</section>
+					<section>
+						<h2>Why do we need JSON? </h2>
+						<ul>
+							<li class="fragment">A lot of interesting data stored as JSON files. </li>
+							<li class="fragment">JSON files are relatively light-weight. </li>
+							<li class="fragment">Compared with other file formats JSON files are easy to parse. </li>
+							<li class="fragment">JSON files are human-readable. </li>
+						</ul> 
+					</section>
+					<section>
+						<h2>JSON data Syntax </h2>
+						<ul>
+							<li>Data is in name/value pairs</li>
+							<li>Data is separated by commas</li>
+							<li>Curly braces hold objects</li>
+							<li>Square brackets hold arrays (ie. vectors)</li>
+							<li>Data is hierachical</li>
+						</ul>
+						<p class="fragment">A simple example:</p>
+						<pre><code class ="json hljs fragment" data-trim>
+{"employees":[
+  { "firstName":"John", "lastName":"Doe" },
+  { "firstName":"Anna", "lastName":"Smith" },
+  { "firstName":"Peter", "lastName":"Jones" }
+]}
+						</code></pre>
+						<p class="fragment">Since JSON files are just plain text, you can open them in any text editor.</p>
+						<p class="fragment">However, opening a JSON file in your browser might give a better overview: </p>
+						<p class="fragment"><a href="inaugural_sample.json">Inaugural Speeches example </a>
+						<a href="twitter-example.json">Tweets example </a></p>
+					</section>
+					<section>
+						<h2>Loading text from a JSON file into R</h2>
+						<p class="fragment">The readtext package also makes it easy to load text from a JSON file: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> df <- readtext("json/inaugural_sample.json", text_field = "texts")
+						</code></pre>
+						<p class="fragment">Again, we need to tell R where in the JSON file to find the texts we are interested in. </p>
+						<p class="fragment">Docvars are automatically imported like when we loaded the csv files. </p>
+						<p class="fragment">However, with complex JSON files it can be a bit tricky to predict how docvars are imported: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> df <- readtext("twitter.json", text_field = "text")
+File doesn't contain a single valid JSON object.
+						</code></pre>
+						<p class="fragment">Luckily, readtext include options to automatically parse common text datasets, such as tweets: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> df <- readtext("twitter.json", text_field = "text", source = "twitter")
+						</code></pre>
+					</section>
+					<section>
+						<h2>HTML and XML files </h2>
+						<p class="fragment">The readtext package can also load text from html or xml files. </p>
+						<p class="fragment">Html is a markup language that is used to describe a website so that your browser can render the website for you. We will look more into this file format when learning how to scrape a website for data. </p>
+						<p class="fragment">An XML file uses similar syntax to an html file, but is used to store data in a similar way as a JSON file: </p>
+						<pre><code class ="xml hljs fragment" data-trim>
+<employees>
+  <employee>
+    <firstName>John</firstName> <lastName>Doe</lastName>
+  </employee>
+  <employee>
+    <firstName>Anna</firstName> <lastName>Smith</lastName>
+  </employee>
+  <employee>
+    <firstName>Peter</firstName> <lastName>Jones</lastName>
+  </employee>
+</employees>
+						</code></pre>
+						<p class="fragment">XML files are harder to parse than a JSON file and while the readtext package works fine for simple xml files, it is not the best option to load xml data into R. </p>
+						
+					</section>
+					<section>
+						<h2>PDF files </h2>
+						<p class="fragment">Readtext can also be used to read and convert pdf files: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> df <- readtext("pdf/UDHR/*.pdf", 
++                    docvarsfrom = "filenames", 
++                    docvarnames = c("document", "language"),
++                    sep = "_")
+						</code></pre>
+						<p class="fragment">However, be aware that pdf files are often messy and the readtext package just loads all the text (inlcuding page numbers, headers etc.) from a pdf file. So it only works with relatively simple pdf files and often needs a bit extra cleaning up. </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> df <- readtext("pdf/UK_natl_2005_en_PVP.pdf")
+> df[,2]
+[1] "     ⌧ Protest Vote Party\n                          Manifesto\n We believe that the public have the right to say:\n     “Sorry, but none of the candidates are\n      good enough to represent me.\n      You are not who I want.\n      I do not know enough about any of them\n      to give them the power to vote on laws\n      that crucially affect me and my family.”\nProtest Vote Party\n“It’s not that people can’t be bothered to vote.\n                      There’s just no one suitable to vote for.”\nGiving you the right to vote “None of the Above”      Above”\n                                       www.ProtestVoteParty.org\n\n              Two party state ..........................3\n              Our aim .....................................4\n              Our method................................5\n              Responsibility .............................6\n              An apolitical stance .....................6\n              Party objectives ..........................7\n  ... <truncated>
+> 
+						</code></pre>
+					</section>
+					<section>
+						<h2>Microsoft word files </h2>
+						<p class="fragment">Both .doc and .docx can be read by the readtext package. </p>
+						<p class="fragment">.docx documents work quite well: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> df <- readtext("word/*.docx")
+> df[1,2]
+[1] "The Eccentric Party\nElection Manifesto 2015\nPOLICIES:\u2028iPads, smartphones, X-boxes etc will come with a slot metre to reduce the amount of time kids are glued to these gadgets, once they've run out of money they can be chucked outside to get fitter playing sport, this will end childhood obesity.\u2028We're going to replace all sleeping policemen with members of the House of Lords\nObesity....All lip balm will be made with super glue.\nEducation - You will be required to read a book for every 10 selfies you take\nA GCSE in lying will be created.\nWe'll build new schools using revolutionary inflatable classrooms making it easier for delinquent pupils to let the entire school down, reducing class sizes to 3'x2'6\" and the abolition of student top-up fees; students should be entitled to full pints the same as everyone else.\nImmigration - We propose placing giant photos of \"celebrities\" such as Russell Brand, Katie Hopkins and Jeremy Clarkson at airports \"to discourage foreig... <truncated>
+						</code></pre>
+						<p class="fragment">.doc documents might need a bit of extra clean up: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> df <- readtext("word/*.doc")
+> df[1,2]
+[1] "[pic]\nRésumé du programme du PS pour les élections européennes\n\nPréambule : une autre Europe pour une autre mondialisation\n\nLes  socialistes  ont  toujours  été  des  partisans  de   la   construction\neuropéenne.\n\nD’abord parce que l’intégration européenne représente une garantie  pour  la\npaix  et  la  stabilité  démocratique.  Tel  était  le  souhait  des   pères\nfondateurs  de  l’Union  européenne.  Au  lendemain  de  la  seconde  guerre\nmondiale, ils ont jeté les bases d’une coopération pacifique  qui  a  permis\naux Etats de s’unir plutôt que de se diviser.\n\nEnsuite parce que l’intégration européenne a permis de grands  progrès  pour\nles citoyens européens. Avec  l’établissement  successif  de  la  Communauté\neuropéenne du Charbon et de l’Acier, de la Communauté économique  européenne\net puis l’Union européenne, le niveau et la qualité  de  vie  en  Europe  se\nsont globalement améliorés.\n\nEnfin, parce qu’à l’heure de la  mondialisation,  l’Europe  avec  son... <truncated>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Text from archive files (.zip, .tar, .tar.gz, .tag.bz) </h2>
+					</section>
+				</section>
+
+				
+				
+				<section>
+					<h1>Next lecture: Privacy and ethics</h1>
+					<ul>
+						<li class="fragment">Two required readings </li>
+						<li class="fragment">Two additional readings (mostly if you are particularly interested in subject)</li>
+					</ul>
+				</section>
+				
+				
+				
+
+				<section>
+					<h1>Thanks and have a nice Christmas break!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
