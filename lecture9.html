@@ -1,0 +1,402 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 9</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 10 by Nikolai Gad</p>
+					<p>München, 14. December 2022</p>
+				</section>
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Answers to tutorial from last week </li>
+						<li>Subsetting and trimmings dfm's</li>
+						<li>Validating and building dictionaries: Your dictionaries</li>
+					</ul>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>
+					<section>
+						
+					</section>
+					
+				</section>
+
+
+
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Subsetting and trimming dfm's </h3>
+					<section>
+						<h3>Typical mistake </h3>
+						<p class="fragment">Often students refer to variable names in subset functions with double quotes: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+inaugDfmPostWWII <- dfm_subset(inaugDfm, "Year" >= 1945)
+						</code></pre>
+						<p class="fragment">Never use double quotes when referring to a variable name in dfm_subset()! </br> (or the normal subset() function for that matter) </p>
+						<p class="fragment">Be particular aware of this, since it will not through an error and might look like it works!</p>
+						<p class="fragment">The correct subsetting should look like this: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+inaugDfmPostWWII <- dfm_subset(inaugDfm, Year >= 1945)
+						</code></pre>
+						<p class="fragment">So what are the consequences of using double quotes?</p>
+					</section>
+					<section>
+						<h3>Example corpus: </h3>
+						<table>
+							<tr>
+								<th>Doc ID: </th>
+								<th>Docvar1: </th>
+								<th>Text: </th>
+							</tr>
+							<tr>
+								<td>Elephant </td>
+								<td>Wild animal</td>
+								<td>I am an elephant. </td>
+							</tr>
+							<tr>
+								<td>Lion </td>
+								<td>Wild animal</td>
+								<td>I am a lion. </td>
+							</tr>
+							<tr>
+								<td>Dog</td>
+								<td>Pet animal</td>
+								<td>I am a dog. </td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td>dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Dog: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>3</td>
+								<td>3</td>
+								<td>1</td>
+								<td>1</td>
+								<td>3</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_subset(dfm_animals, Docvar1 == "Wild animal")
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td>dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr style="color:red;" class="blink">
+								<th>Dog: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>3</td>
+								<td>3</td>
+								<td>1</td>
+								<td>1</td>
+								<td>3</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_subset(dfm_animals, Docvar1 == "Wild animal")
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td>dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>2</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_subset(dfm_animals, Docvar1 == "Wild animal")
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+								<td style="color:red">dog</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td style="color:red">0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td style="color:red">0</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>2</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td style="color:red">0</td>
+							</tr>
+						</table>
+					</section>
+					<section data-auto-animate>
+						<pre><code class ="r hljs" data-trim data-noescape>
+dfmWild <- dfm_trim(dfmWild, min_termfreq = 1)
+						</code></pre>
+						<h3>Document-feature-matrix: </h3>
+						<table data-id="table-animation">
+							<tr>
+								<th>Doc ID: \ Tokens: </th>
+								<td>I</td>
+								<td>am</td>
+								<td>an</td>
+								<td>elephant</td>
+								<td>.</td>
+								<td>a</td>
+								<td>lion</td>
+							</tr>
+							<tr>
+								<th>Elephant: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<th>Lion: </th>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+								<td>1</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<th>Total: </th>
+								<td>2</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+								<td>2</td>
+								<td>1</td>
+								<td>1</td>
+							</tr>
+						</table>
+					</section>
+				</section>
+				
+				
+			
+
+
+				
+				
+				
+
+				<section>
+					<h1>Thanks and see you next week!</h1>
+					<p>(Remember there is no teaching tomorrow)</p>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
