@@ -32,12 +32,13 @@
 						<li>Practicals </li>
 						<li>Subsetting and trimmings dfm's</li>
 						<li>Loading text data into R </li>
+						<li>Validating and building dictionaries: Your dictionaries</li>
 					</ul>
 				</section>
 				<section>
 					<h3 style="color: rgb(0,101,189)">Practicals </h3>
 					<section>
-						
+						<h2>No teaching tomorrow! </h2>
 					</section>
 					
 				</section>
@@ -535,6 +536,41 @@ File doesn't contain a single valid JSON object.
 					</section>
 					<section>
 						<h2>Text from archive files (.zip, .tar, .tar.gz, .tag.bz) </h2>
+					</section>
+				</section>
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Dictionary Analysis </h3>
+					
+					<section>
+						<h2>Your dictionaries </h2>
+					</section>
+					<section>
+						<h2>Validate dictionary </h2>
+						<p class="fragment">Three key issues we want to be aware of: </p>
+						<ul>
+							<li class="fragment">Validity: Does the categories actually makes sense and represent well the concept we are interested in? </li>
+							<li class="fragment">Recall: Does the dictionary capture all the content related to concept? </li>
+							<li class="fragment">Precision: Does the dictionary only capture the content related to concept? </li>
+						</ul>
+						<p class="fragment">So recall and precision could be measured as: </p>
+						<ul>
+							<li class="fragment">Recall: Proportion of all mentions of concept that is actually captured by our dictionary. </li>
+							<li class="fragment">Precision: Proportion of all the content captured by the dictionary which actually relates to concept of interest. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Approach to build a good dictionary: </h2>
+						<ol>
+							<li class="fragment">Identify "extreme texts" with known positions. </li>
+							<li class="fragment">Use word frequencies from each group to identify words that occur often in one group, but rarely in the other. </li>
+							<li class="fragment">Check these keywords in context to measure precision (possibly just take a random sample)</li>
+							<li class="fragment">Consider need to stem keywords. </li>
+						</ol>
+					</section>
+					<section>
+						
 					</section>
 				</section>
 
