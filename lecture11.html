@@ -1,0 +1,538 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 11</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 11 by Nikolai Gad</p>
+					<p>München, 11. January 2023</p>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Privacy and the GDPR </li>
+						<li>Research ethics </li>
+						<li>(Sparsity/density of document-feature-matrices) </li>
+					</ul>
+				</section>
+				<section>
+					<h2>Practicals </h2>
+					
+				</section>
+
+
+
+				
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Privacy and research ethics </h3>
+					<section>
+						<h2 class="fragment">What is privacy? </h2>
+						<p class="fragment">"Privacy is the right to be left alone" (Warren & Brandeis, 1890) </p>
+						<p class="fragment">"Privacy is the claim of individuals, groups or institutions to determine for themselves when, how and to what extent information about them is communicated to others" (Westin, 1967)</p>
+						<h2 class="fragment">What is ethics? </h2>
+						<p class="fragment">A field of philosophy which "...involves systematizing, defending, and recommending concepts of right and wrong behaviour." (<a href="https://iep.utm.edu/ethics/">The Internet Encyclopedia of Philosophy</a>)</p>
+						<p class="fragment">So research ethics are concepts about right and wrong ways to conduct research. </p>
+					</section>
+					<section>
+						<p>This is a very practical introduction to two very complex issues: Will focus on the most important points that you need to be aware of when you collect data. </p>
+						<p class="fragment"></p>
+						<ul>
+							<li class="fragment">Normative considerations. </li>
+							<li class="fragment">Legal restrictions. </li>
+							<li class="fragment">"Contractual" restrictions (terms and conditions etc.) </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Legal disclaimer:</h2>
+						<p>I am not a lawyer and the following slides are not legal advice! </p>
+					</section>
+				</section>
+				
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Privacy and the General Data Protection Regulation (GDPR)</h3>
+					
+					<section>
+						<p class="fragment">The GDPR is the name of the rules governing how personal information should be handled in the EU. </p>
+						<p class="fragment">It has been in force since 2018 and to some extent it's implications for research with computational methods are still unclear. </p>
+					</section>
+					<section>
+						<p>But the rules of the GDPR apply to: </p>
+						<ul>
+							<li class="fragment">All processing of personal data (for EU residents).  </li>
+							<li class="fragment">Applies to <em>all</em> data collection: Public and private sectors as well as individuals.  </li>
+							<ul>
+								<li class="fragment">Data processing "by an individual for purely personal reasons or for activities carried out in one's home, provided there is no connection to a professional or commercial activity." are exempted. </li>
+								<li class="fragment">Specific excemptions and responsibilities specified for certain purposes. </li>
+								<li class="fragment">Special responsibilities for organisations with more than 250 employees. </li>
+							</ul>
+							<li class="fragment">No distinction between public and non-public data in GDPR, but might still matter (different interpretations). </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Personal data: </h3>
+						<p class="fragment">Data relating to an identified or identifiable natural person. </p>
+						<p class="fragment">Anonymised data - in such a way that individuals are no longer identifiable AND the anonymisation is irreversible - is not considered personal data (but this level of anonymisation is often impossible to achieve). </p>
+						</br>
+						<p class="fragment">So would you say some of the data we have worked with so far in the class, is covered by the GDPR? </p>
+					</section>
+					<section>
+						<h3>Seven basic principles </h3>
+						<p>Which also makes up a good check list. </p>
+						<ul>
+							<li class="fragment">Lawful basis </li>
+							<li class="fragment">Purpose limitation </li>
+							<li class="fragment">Data minimization </li>
+							<li class="fragment">Accuracy </li>
+							<li class="fragment">Storage limitation </li>
+							<li class="fragment">Integrity and confidentiality </li>
+							<li class="fragment">Accountability </li>
+						</ul>
+						<p class="fragment">Public vs. private data </p>
+					</section>
+					<section>
+						<h3>Legal basis for data processing </h3>
+						<p>(your justification for collecting and processing the data) </p>
+						<ol>
+							<li class="fragment">Consent </li>
+							<li class="fragment fade-in-then-semi-out">Perfomance of contract </li>
+							<li class="fragment fade-in-then-semi-out">To comply with legal obligation </li>
+							<li class="fragment fade-in-then-semi-out">Protecting vital interests of individuals </li>
+							<li class="fragment">In the public interest </li>
+							<li class="fragment">"legitimate interest" </li>
+						</ol>
+					</section>
+					
+					<section>
+						<h3>k-anonymity</h3>
+						<p>A data release provides k-anonymity protection if the information for each person contained in the release cannot be distinguished from at least k-1 individuals whose information also appears in the data. </p>
+						<h2 class="fragment">What is the k-anonymity of the twitter dataset you worked on last week? </h2>
+						<p class="fragment">Altogether the k-anonymity of the dataset is 1 because each tweet has a unique combination of username and time, so none of the tweets have exactly the same values for all variables. </p>
+						<ul>
+							<li class="fragment">Supression: Remove certain identifiable variables or values. </li>
+							<li class="fragment">Generalisation: Replace values with broader categories.  </li>
+						</ul>
+					</section>
+					<section>
+						<table>
+<tbody><tr>
+<th>Name</th>
+<th>Age</th>
+<th>Gender</th>
+<th>State of domicile</th>
+<th>Religion</th>
+<th>Disease
+</th></tr>
+<tr>
+<td>Ramsha</td>
+<td>30</td>
+<td>Female</td>
+<td>Tamil Nadu</td>
+<td>Hindu</td>
+<td>Cancer</td></tr>
+<tr>
+<td>Yadu</td>
+<td>24</td>
+<td>Female</td>
+<td>Kerala</td>
+<td>Hindu</td>
+<td>Viral infection</td></tr>
+<tr>
+<td>Salima</td>
+<td>28</td>
+<td>Female</td>
+<td>Tamil Nadu</td>
+<td>Muslim</td>
+<td>TB</td></tr>
+<tr>
+<td>Sunny</td>
+<td>27</td>
+<td>Male</td>
+<td>Karnataka</td>
+<td>Parsi</td>
+<td>No illness
+</td></tr>
+<tr>
+<td>Joan</td>
+<td>24</td>
+<td>Female</td>
+<td>Kerala</td>
+<td>Christian</td>
+<td>Heart-related</td></tr>
+<tr>
+<td>Bahuksana</td>
+<td>23</td>
+<td>Male</td>
+<td>Karnataka</td>
+<td>Buddhist</td>
+<td>TB</td></tr>
+<tr>
+<td>Rambha</td>
+<td>19</td>
+<td>Male</td>
+<td>Kerala</td>
+<td>Hindu</td>
+<td>Cancer
+</td></tr>
+<tr>
+<td>Kishor</td>
+<td>29</td>
+<td>Male</td>
+<td>Karnataka</td>
+<td>Hindu</td>
+<td>Heart-related
+</td></tr>
+<tr>
+<td>Johnson</td>
+<td>17</td>
+<td>Male</td>
+<td>Kerala</td>
+<td>Christian</td>
+<td>Heart-related
+</td></tr>
+<tr>
+<td>John</td>
+<td>19</td>
+<td>Male</td>
+<td>Kerala</td>
+<td>Christian</td>
+<td>Viral infection
+</td></tr></tbody>
+						</table>
+					</section>
+					<section>
+						<p>Dataset with k-anonymity of 2 with respect to "age", "gender" and "state of domicile": </p>
+						<table>
+
+<tbody><tr>
+<th>Name</th>
+<th>Age</th>
+<th>Gender</th>
+<th>State of domicile</th>
+<th>Religion</th>
+<th>Disease
+</th></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Female</td>
+<td>Tamil Nadu</td>
+<td>*</td>
+<td>Cancer
+</td></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Female</td>
+<td>Kerala</td>
+<td>*</td>
+<td>Viral infection
+</td></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Female</td>
+<td>Tamil Nadu</td>
+<td>*</td>
+<td>TB
+</td></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Male</td>
+<td>Karnataka</td>
+<td>*</td>
+<td>No illness
+</td></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Female</td>
+<td>Kerala</td>
+<td>*</td>
+<td>Heart-related
+</td></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Male</td>
+<td>Karnataka</td>
+<td>*</td>
+<td>TB
+</td></tr>
+<tr>
+<td>*</td>
+<td>Age ≤ 20</td>
+<td>Male</td>
+<td>Kerala</td>
+<td>*</td>
+<td>Cancer
+</td></tr>
+<tr>
+<td>*</td>
+<td>20 &lt; Age ≤ 30</td>
+<td>Male</td>
+<td>Karnataka</td>
+<td>*</td>
+<td>Heart-related
+</td></tr>
+<tr>
+<td>*</td>
+<td>Age ≤ 20</td>
+<td>Male</td>
+<td>Kerala</td>
+<td>*</td>
+<td>Heart-related
+</td></tr>
+<tr>
+<td>*</td>
+<td>Age ≤ 20</td>
+<td>Male</td>
+<td>Kerala</td>
+<td>*</td>
+<td>Viral infection
+</td></tr></tbody>
+						</table>
+					</section>
+					<section>
+						<h3>Calculating the k-anonymity of a data set. </h3>
+						<p>A data release provides k-anonymity protection if the information for each person contained in the release cannot be distinguished from at least k-1 individuals whose information also appears in the data. </p>
+						<p class="fragment">So essentially we need to find all the unique combinations of values in our dataset and calculate how many times each of these combinations occur. </p>
+						<p class="fragment">The uniqe combination of all answers that occurs the least times are then our k-anonymity. </p>
+						<p class="fragment">This is the minimum number of records/respondents that have exactly identical values to each other. </p>
+					</section>
+					<section>
+						<h3>Extracting all unique combinations of values in data set: </h3>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> unique(df)
+         Age Gender       SofD         Disease
+1  20-Age-30 Female Tamil Nadu          Cancer
+2  20-Age-30 Female     Kerala Viral Infection
+3  20-Age-30 Female Tamil Nadu              TB
+4  20-Age-30   Male  Karnataka      No illness
+5  20-Age-30 Female     Kerala   Heart-related
+6  20-Age-30   Male  Karnataka              TB
+7     Age-20   Male     Kerala          Cancer
+8  20-Age-30   Male  Karnataka   Heart-related
+9     Age-20   Male     Kerala   Heart-related
+10    Age-20   Male     Kerala Viral Infection
+<span class="fragment">
+> unique(df[,1:3])</span>
+<span class="fragment">        Age Gender       SofD
+1 20-Age-30 Female Tamil Nadu
+2 20-Age-30 Female     Kerala
+4 20-Age-30   Male  Karnataka
+7    Age-20   Male     Kerala
+</span>
+						</code></pre>
+					</section>
+					<section>
+						<h3>Counting the frequency of each unique combination of values in data set: </h3>
+						<p class="fragment">Can be done with the methods you know, but much easier with the "plyr" package. So if you do not already have it you need to install this first: </p>
+						<pre><code class="r hljs fragment" data-trim data-noescape>
+> install.packages("plyr")
+						</code></pre>
+						<pre><code class="r hljs fragment" data-trim data-noescape>
+> library(plyr)
+<span class="fragment">> count(df[,1:3])
+        Age Gender       SofD freq
+1 20-Age-30 Female     Kerala    2
+2 20-Age-30 Female Tamil Nadu    2
+3 20-Age-30   Male  Karnataka    3
+4    Age-20   Male     Kerala    3</span>
+<span class="fragment">> dfUnique <- count(df[,1:3])</span>
+<span class="fragment">> min(dfUnique$freq)
+[1] 2</span>
+						</code></pre>					
+					</section>
+				</section>
+				
+				
+				<section>
+					<h1 style="color: rgb(0,101,189)">Research Ethics </h1>
+					<p class="fragment">Not only relevant to university research! </p>
+					<p class="fragment">Two sides to research ethics: </p>
+					<ol>
+						<li class="fragment">What not to do (to participants) </li>
+						<li class="fragment">What research ought to be done </li>
+					</ol>
+					<p class="fragment">Three approaches (according to Mathew Salganik)</p>
+					<ul>
+						<li class="fragment">Social Science: rules-based approach </li>
+						<li class="fragment">Data Science: ad-hoc approach </li>
+						<li class="fragment">Salganik: principles-based approach </li>
+					</ul>
+					<p><cite style="font-size: small; font-style: italic;">Salganik, M. J. (2017). Bit by Bit: Social Research in the Digital Age. Princeton: Princeton University Press.
+</cite></p>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Specific ethical challenges to computational methods </h3>
+					<p class="fragment">Increased power to <em>observe</em> and <em>enrol participants in experiments</em> without their <em>consent</em> or <em>awareness</em>. </p>
+					<ul>
+						<li class="fragment">Unseen seers (Foucault). </li>
+						<li class="fragment">Unanticipated secondary use. </li>
+						<li class="fragment">Increasing possibilities for researchers to <em>intervene</em> in people's lives. </li>
+					</ul>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Two ethical frameworks </h3>
+					<section>
+						
+					</section>
+					<section>
+						<h2>Consequentialism </h2>
+						<ul>
+							<li class="fragment">Focus on <em>ends</em>: </li>
+							<li class="fragment">Take actions that lead to a better world! </li>
+							<li class="fragment">Main influencers: Jeremy Bentham & John Stuart Mill </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Deontology </h2>
+						<ul>
+							<li class="fragment">Focus on <em>means</em>: </li>
+							<li class="fragment">Always do what is right, independent of the consequences! </li>
+							<li class="fragment">Main influencer: Immanual Kant </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Consequentialism vs. deontology </h2>
+						<ul>
+							<li class="fragment">Despite being fundamentally opposites, </li>
+							<li class="fragment">a blend of both is often most useful. </li>
+							<li class="fragment">But often we emphasise one over the other. </li>
+							<li class="fragment">Good framework to clarify different views on ethics. </li>
+							<li class="fragment">Use them to think about your project from both angles. </li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h3 style="color: rgb(0,101,189)">Four ethical principles </h3>
+					<section>
+						<p class="fragment">Based on two US reports with guidelines on research ethics: </p>
+						<ul class="fragment">
+							<li>Belmont Report (1979)</li>
+							<li>Menlo Report (2011)</li>
+						</ul>
+						<p class="fragment">Principles are <em>not</em> rules! </p>
+					</section>
+					<section>
+						<h2>Respect for persons</h2>
+						<p class="fragment" data-fragment-index="1">Persons are autonomous </p>
+						<p class="fragment" data-fragment-index="2">⇓</p>
+						<p class="fragment" data-fragment-index="2">Let people control their own lives </p>
+						<p class="fragment" data-fragment-index="3">⇓</p>
+						<p class="fragment" data-fragment-index="3">Informed consent </p>
+						<p class="fragment" data-fragment-index="4">⇓</p>
+						<p class="fragment" data-fragment-index="4">Participants and not researchers decide what is best for them </p>
+						<h3 class="fragment">Facebook case: Informed consent? </h3>
+					</section>
+					<section>
+						<h2>Beneficence </h2>
+						<p class="fragment">Maximise possible benefits while minimising possible risks. </p>
+						<ol>
+							<li class="fragment">Understand possible risks/benefits: </li>
+							<ol>
+								<li class="fragment">Probability of adverse effects. </li>
+								<li class="fragment">Severity of possible adverse effects. </li>
+								<li class="fragment">Consider participants as well as non-participants and society. </li>
+							</ol>
+							<li class="fragment">Attempt to improve risk/benefit </li>
+							<ol>
+								<li class="fragment">Reduce probability of adverse effects. </li>
+								<li class="fragment">Reduce severity of adverse effects if they occur. </li>
+								<li class="fragment">Increase benefit of study. </li>
+							</ol>
+							<li class="fragment">Make a decision whether possible benefit is worth the risk: </li>
+							<ol>
+								<li class="fragment">Not a simple summation! </li>
+								<li class="fragment">Not only up to researchers to decide. </li>
+							</ol>
+						</ol>
+					</section>
+					<section>
+						<h2>Justice </h2>
+						<p class="fragment">Fair dsitribution of risks and benefits. </p>
+						<ul>
+							<li class="fragment">Vulnerable groups should be particularly protected. </li>
+							<li class="fragment">Vulnerable people should be explicitly included in research. </li>
+							<li class="fragment">So is random sampling more fair/just? </li>
+							<li class="fragment">Compensation to research participants? </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Respect for Law and Public Interest </h2>
+						<p class="fragment">Specificly added for research on information and communication technologies, and consists of two parrts: </p>
+						<ul>
+							<li class="fragment">Compliance: </li>
+							<ul>
+								<li class="fragment">Comply with laws and regulations, but also terms of service and contracts. </li>
+								<li class="fragment">Particularly complicated in computational methods. </li>
+								<li class="fragment">But do so critically! </li>
+							</ul>
+							<li class="fragment">Transparency-based accountability: </li>
+							<ul>
+								<li class="fragment">Openness about goals, methods, and results. </li>
+								<li class="fragment">-> Makes us accountable for what we do. </li>
+								<li class="fragment">Rule-of-thumb: Would you be comfortable with your research procedures being printed on the front page of your local newspaper? </li>
+							</ul>
+						</ul>
+					</section>
+				</section>
+
+
+		
+				
+			
+				
+				
+
+
+				<section>
+					<h1>Thanks and see you tomorrow!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
