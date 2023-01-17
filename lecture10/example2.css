@@ -1,0 +1,20 @@
+body {
+	width: 75%; 
+}
+
+h1 {
+	color: rgb(0, 101, 189); 
+	font-size: 50px; 
+}
+
+.thisOne {
+	color: rgb(0, 0, 255); 
+}
+
+body p:nth-child(1) {
+	font-family: Ariel, sans-serif; 
+}
+
+div p {
+	color: rgb(255, 0, 0) 
+}

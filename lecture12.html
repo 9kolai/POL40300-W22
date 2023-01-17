@@ -1,0 +1,567 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 12</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 12 by Nikolai Gad</p>
+					<p>München, 18. January 2023</p>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Computational data collection </li>
+						<li>Web scraping </li>
+						<li>(Very) basic introdcution to html </li>
+						<li>Web scraping in R </li>
+						
+					</ul>
+				</section>
+				
+				
+				<section>
+					<h3>Practicals </h3>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Course evaluations </h3>
+						<ul>
+							<li class="fragment">Invitations sent out Mon 16th Jan</li>
+							<li class="fragment">2 Weeks: Deadline Fri 27th Jan</li>
+							<li class="fragment">Please take 5 minutes to complete! </li>
+						</ul>
+					</section>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Workflow in Quanteda </h3>
+						<img src="pic/lecture10/QuantedaWorkflowWTxt.svg" width= "60%" />
+					</section>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Computational data collection.  </h3>
+					<section>
+						<p class="fragment">As with traditional data collection, computational data collection covers a broad and diverse range of practices: </p>
+						<ul>
+							<li class="fragment">Observational data. </li>
+							<li class="fragment">Asksing questions. </li>
+							<li class="fragment">Experiments. </li>
+							<li class="fragment">Collaborating with participants. </li>
+						</ul>
+						<p class="fragment">Most big data is observational data: It is a new way to <em>observe behaviour</em> computationally. </p>
+						<p class="fragment">Using digital traces and sensors instead of traditional observational records. </p>
+						<p class="fragment">Web scraping is one way to collect such data. </p>
+					</section>
+					<section>
+						
+					</section>
+					<section>
+						<h2>Digital systems as instruments vs. objects of study</h2>
+						<ul>
+							<li class="fragment">Instruments: Use of digital/online/big data to study social phenomona (that was previously difficult or impossible to measure)</li>
+							<ul>
+								<li class="fragment">Example: Use social media data to measure public opinion (instead of distributing a survey fx.)</li>
+							</ul>
+							<li class="fragment">Objects: Use digital/online/big data to study digital systems. </li>
+							<ul>
+								<li class="fragment">Example: Use social media data to measure the impact of social media use on public opinion. </li>
+							</ul>
+						</ul>
+						<p class="fragment">Not mutually exclusive! </p>
+					</section>
+					<section>
+						<p></p>
+						<p class="fragment">Distinction between: </p>
+						<ul>
+							<li class="fragment">Readymade data</li>
+							<li class="fragment">Custommade data </li>
+						</ul>
+						<p class="fragment">Often a hybrid is optimal, but important to consider where your data comes from!</p>
+						<p style="font-size:small">(Salganik, 2017)</p>
+						<p class="fragment">=> Be critical of big data: Who, what, where, when, and why? </p>
+						<ul>
+							<li class="fragment">Pro's: Big, always-on, non-reactive. </li>
+							<li class="fragment">Con's: Incomplete, inaccessible, non-representative, drifting, algorithmically confounded, dirty, and sensitive. </li>
+						</ul>
+							
+					</section>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Web scraping </h3>
+					<section>
+						<p class="fragment">One example of computational data collection.  </p>
+						<p class="fragment">Simple definition:  </p>
+						<h3 class="fragment" style="color: rgb(0,101,189)">To extract information <em>automatically</em> from a website. </h3>
+						<p class="fragment">Automatically is key here. </p>
+						<p class="fragment">Usually done by writing and running a script to collect specific data. </p>
+					</section>
+					<section>
+						<h3>How does web scraping work? </h3>
+						<p class="fragment">Roughly speaking there are three steps to web scraping: </p>
+						<ol>
+							<li class="fragment">Check if we are allowed to scrape data. </li>
+							<li class="fragment">Fetch website containing data of interest. </li>
+							<li class="fragment">Extract and store relevant data from website (in a structured format)</li>
+						</ol>
+						<br />
+						<ul>
+							<li class="fragment">(Repeat)</li>
+						</ul>
+					
+					</section>
+					<section>
+						<h3>Why webscraping?</h3>
+						<p>"Pro"s of webscraping:</p>
+						<ul>
+							<li class="fragment">Automation means we can relatively easily collect: </li>
+							<ul>
+								<li class="fragment"><em>a lot</em> of data</li>
+								<li class="fragment">and do it <em>often</em>. </li>
+							</ul>
+							<li class="fragment">No easy download/save data option available. </li>
+							<li class="fragment">Structuring data in a useful format for analysis. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Why not webscraping?</h3>
+						<p>"Con"s of webscraping: </p>
+						<ul>
+							<li class="fragment">Writing a web scraping script can be time consuming <span class="fragment"> (so always consider if this is the easiest way to collect data). </span></li>
+							<li class="fragment">Static and well structured websites works best. </li>
+							<li class="fragment">Code changes. </li>
+							<li class="fragment">IP blocking if overburdening server. </li>
+							<li class="fragment">Not all websites allow you to scrape their content. </li>
+						</ul>
+					</section>										
+				</section>
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">(Very) basic introduction to html </h3>
+					<section>
+						<ul>
+							<li class="fragment">HTML is a markup language, and it stands for: Hyper Text Markup Language </li>
+							<li class="fragment">HTML files are the backbone of the Internet in your browser. </li>
+						</ul>
+						<p class="fragment">
+						<img src="pic/lecture11/Anonymous_thin_client.svg" alt="Computer" style="border: none; height: 5em; float: left"/>
+						 ➡ request send to server ➡
+						<img src="pic/lecture11/Dell_Poweredge_1950.svg" alt="server" style="border: none; height: 5em; float: right" />
+						</p>
+						<p class="fragment"> ⬅  html file (and other files) are returned ⬅  </p>
+						<p class="fragment">Website is rendered in your browser based on html file. </p>
+					</section>
+					
+					<section>
+						<h3>A simple example </h3>
+						<p>HTML is pretty straightforward and you don’t have to be an expert to scrape websites. Pages are basically structured like the example below.</p>
+						<pre class="html hljs"><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;h1&gt;This is a heading&lt;/h1&gt;
+
+&lt;p class="notThisOne"&gt;This is a paragraph&lt;/p&gt;
+
+&lt;p class="thisOne"&gt;But I only want this paragraph&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+						<p>This html file will look like <a href="lecture10/html-example1.html">this</a> when opened in a browser. </p>
+					</section>
+					
+					<section>
+						<ul>
+							<li class="fragment"><img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML" style="border: none; height: 5em; vertical-align: middle;" />html files describe <em>content</em>. </li>
+							<li class="fragment"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/CSS.3.svg" alt="CSS" style="border: none; height: 5em; vertical-align: middle;" /> css files describe <em>appearance</em>. </li>
+							<li class="fragment"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Javascript-shield.svg" alt="Javascript" style="border: none; height: 5em; vertical-align: middle;" /> JavaScript files describe <em>behaviour</em>. </li>
+						</ul>
+					</section>
+					
+					<section>
+						<p>Two main concepts of html markup language you need to know (and a third less important one): </p>
+						<ul>
+							<li class="fragment" data-fragment-index="1">html tags: </li>
+							<ul>
+								<li class="fragment" data-fragment-index="3">All content in a html file is nested within a html tag (fx. h1 or p)</li>
+								<li class="fragment" data-fragment-index="4">These tags starts with &lt;tag&gt; and ends with &lt;/tag&gt; </li>
+							</ul>
+							<li class="fragment" data-fragment-index="2">css selectors:</li>
+							<ul>
+								<li class="fragment" data-fragment-index="5">Each html tag can be assigned a <em>class</em> and/or <em>id</em>. </li>
+								<li class="fragment" data-fragment-index="6">Id's are unique while many tags can use the same class. </li>
+							</ul>
+						</ul>
+						<p class="fragment" data-fragment-index="8">This is useful to know, because we can use these tags and selectors to define which part of a website contains the data we are interested in. </p>
+					</section>
+					
+					<section>
+						<h3>HTML vocabulary </h3>
+						<ul>
+							<li class="fragment">Tags: Start tags &lt;tagName&gt; and end tags &lt;/tagName&gt; </li>
+							<ul>
+								<li class="fragment">(some special tags can be closed within their start tag and thus do not need an end tag: &lt;tagName /&gt;. Examples: &lt;br /&gt; &lt;img /&gt;)</li>
+							</ul>
+							<li class="fragment">Elements: The combination of a start tag, content, and end tag - &lt;tagName&gt;content&lt;/tagName&gt; (also called nodes) </li>
+							<li class="fragment">Attribute: Each element can be assigned different attribute values in the start tag: &lt;tagName attrName=”value”&gt;content&lt;/tagName&gt; </li>
+							<ul>
+								<li class="fragment">An attribute has a name and a value. </li>
+								<li class="fragment">Typical example: &lt;a href=”www.example.com”&gt;This will be a link. &lt;/a&gt;</li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h3>HTML vocabulary II: DOM (Document Object Model) Tree structure</h3>
+						<ul>
+							<li class="fragment">Nesting: When one html element is inside another html element we say it is nested within it. </li>
+							<li class="fragment">Children: Html elements which are nested within another element is children of that other element. </li>
+							<li class="fragment">Parent: An html element is the parent of other html elements directly nested within it. </li>
+							<li class="fragment">Siblings: html elements that are nested within the same html element are nested. </li>
+							<li class="fragment">Descendants: html elements are descendents of any html element that they are directly or indirectly nested within. </li>
+							<li class="fragment">Ascendants: An html element is the ascendant to any of it’s children, it’s children’s children and so on. </li>
+					</section>
+					
+					<section>
+						<h3>Common html tags</h3>
+						<ul class="fragment">
+							<li>Headers: &lt;h1&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;h4&gt;</li>
+							<li>Paragraphs: &lt;p&gt;</li>
+							<li>Images: &lt;img&gt;</li>
+							<li>Bullet points: &lt;ul&gt; around list + &lt;li&gt; tags around each bullet </li>
+							<li>Numbered bullet points: &lt;ol&gt; + &lt;li&gt; </li>
+							<li>Tables: &lt;table&gt; + &lt;tr&gt; around each row and &lt;td&gt; or &lt;th&gt; around each cell. </li>
+							<li>Links: &lt;a href="link"&gt; </li>
+							<li>Block sections ("div's"): &lt;div&gt; </li>
+							<li>Inline sections ("span's"): &lt;span&gt; </li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>CSS selectors </h3>
+						<p class="fragment">Originally developed to be able to style specific parts of websites individually and generally. </p>
+						<p class="fragment">But useful in any context where we want to refer to a specific part of a website. </p>
+						<p class="fragment">A useful list of css selectors: <a href="https://www.w3schools.com/cssref/css_selectors.asp">w3schools.com/cssref/css_selectors</a></p>
+					</section>
+					<section>
+						<h3>CSS selectors </h3>
+						<table><tbody>
+							<tr class="fragment">
+								<th>We can select...: </th>
+								<th>Example: </th>
+								<th>Result: </th>
+							</tr>
+							<tr class="fragment">
+								<td>Specific html tags by just naming them.</td>
+								<td>h1 </td>
+								<td>selects all first level headers.</td>
+							</tr>
+							<tr class="fragment">
+								<td>Classes by putting a dot before the class name.</td>
+								<td>.thisOne </td>
+								<td>selects all elements of class "thisOne".</td>
+							</tr>
+							<tr class="fragment">
+								<td>Id's by putting a # before the id name. </td>
+								<td>#title </td>
+								<td>selects the elements with the id "title". </td>
+							</tr>
+							<tr class="fragment">
+								<td>Elements with two classes by naming each class with no space. </td>
+								<td>.class1.class2 </td>
+								<td>selects elements that belong to both class1 and class2.</td>
+							</tr>
+							<tr class="fragment">
+								<td>Elements that descends another element by listing both with a space between.</td>
+								<td>p .class1 </td>
+								<td>selects all class1 elements within a p element. </td>
+							</tr>
+							<tr class="fragment">
+								<td>Several elements/classes/id's by seperating them with a comma.</td>
+								<td>p, h1, .class1 </td>
+								<td>selects all p elements <em>and</em> all h1 element <em> and</em> all class1 elements. </td>
+							</tr>
+							<tr class="fragment">
+								<td>The n'th child of an element, using :nth-child(A). </td>
+								<td>ul li:nth-child(2) </td>
+								<td>selects the second li element in every ul (unordered list). </td>
+							</tr>
+						</tbody></table>
+
+					</section>
+					
+					<section>
+						<h3>Example of a simple css file: </h3>
+						<p>Just for illustration. You will not need to read or write any css files. </p>
+						<pre class="css hljs"><code>
+body {
+	width: 75%; 
+}
+
+h1 {
+	color: rgb(0, 101, 189); 
+	font-size: 50px; 
+}
+
+.thisOne {
+	color: rgb(0, 0, 255); 
+}
+
+body p:nth-child(1) {
+	font-family: Ariel, sans-serif; 
+}
+
+div p {
+	color: rgb(255, 0, 0) 
+}
+						</code></pre>
+						<p class="fragment">This changes the appearance of the website example to look like <a href="lecture10/html-example2.html">this</a>. </p>
+						<p class="fragment">A demonstration of how it works: <a href="https://www.w3schools.com/cssref/trysel.asp">The w3schools css selector</a>. </p>
+					</section>
+					
+					<section>
+						<h3>Tools to find css selectors</h3>
+						<ul>
+							<li class="fragment">A very nice tutorial/game to learn/practice css selectors: <a href="http://flukeout.github.io/">CSS diner. </a></li>
+							<li class="fragment">The SelectorGadget: <a href="http://rvest.tidyverse.org/articles/selectorgadget.html">here</a> or <a href="https://selectorgadget.com/">here</a>. </li>
+							<li class="fragment">Inspection tool in your browser (at least for Firefox and Chrome - sometimes it works better) </li>
+						</ul>
+					</section>
+										
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Web scraping with R </h3>
+					<section>
+						<h3>Step 1: Check terms and conditions </h3>
+						<p class="fragment">Many websites provide a text file that describes terms and conditions for web scraping in a machine readable format. </p>
+						<p class="fragment">This file is usually called robots.txt and found in the root directory of a domain. </p>
+						<p class="fragment">Format of these files have never been formally standardised, but their use is widespread. </p>
+						<p class="fragment">Example: <a href="https://en.wikipedia.org/robots.txt"> Wikipedia's robots.txt file</a>. </p>
+					</section>
+					<section>
+						<h3>An example of a simple robots.txt file: </h3>
+						<pre><code>
+# this is a comment 
+# a made up example of an robots.txt file
+
+Disallow: /
+
+User-agent: GoodBot # another comment
+User-agent: NiceBot
+Disallow: 
+
+User-agent: PrettyBot
+Allow: /shinystuff/
+
+Crawl-Delay: 5
+						</code></pre>
+					</section>
+					<section>
+						<h3>Check robots.txt</h3>
+						
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> install.packages("robotstxt")
+						</code></pre>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> library(robotstxt)
+<span class="fragment">
+> paths_allowed("http://google.com")
+ google.com                      No encoding supplied: defaulting to UTF-8.
+
+
+[1] TRUE
+</span><span class="fragment">
+> paths_allowed("http://google.com/search")
+ google.com                      No encoding supplied: defaulting to UTF-8.
+
+
+[1] FALSE</span>
+						</code></pre>
+						
+					</section>
+					<section>
+						<h3>The Rvest package for R</h3>
+						<p class="fragment">R package that allows us to easily scrape data of websites from within R: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> install.packages("rvest")
+> library(rvest)
+						</code></pre>
+					</section>
+					<section>
+						<h3>Fetch website </h3>
+						<p class="fragment">First we download the html file of the website and save it in an R object. </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> lego_movie <- read_html("http://www.imdb.com/title/tt1490017")
+						</code></pre>
+					</section>
+					<section>
+						<h3>Extract information from website</h3>
+						<ul>
+							<li class="fragment">Now we need to identify where the data of interest is stored in the html document. </li>
+							<li class="fragment">This is the tricky part. </li>
+							<li class="fragment">Let us take a look at the html code of the imdb page: <a href="http://www.imdb.com/title/tt1490017">here</a>. </li>
+							<li class="fragment">Now that we have a (unique) css selctor for the data we are interested in, we can use that to extract only the html element containing the movie rating: </li>
+						</ul>
+						<pre><code class ="r hljs fragment" data-trim>
+> rating <- html_node(lego_movie, ".eUYAaq")
+> rating
+{xml_nodeset (1)}
+<span class="sc-7ab21ed2-1 eUYAaq">7.7</span>
+						</code></pre>
+					</section>
+					
+					<section>
+						<pre><code class ="r hljs" data-trim>
+> rating
+{xml_nodeset (1)}
+<span class="sc-7ab21ed2-1 eUYAaq">7.7</span>
+						</code></pre>
+						<h3 class="fragment">Extract information from html element: </h3>
+						<p class="fragment">Several functions available for different parts of html elements: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> html_text(rating)
+[1] "7.7"
+<span class="fragment">
+> html_attrs(rating)
+[[1]]
+                 class 
+"sc-7ab21ed2-1 eUYAaq" 
+</span>
+<span class="fragment">
+> html_name(rating)
+[1] "span"</span>
+						</code></pre>
+						<p class="fragment">And more (you will see some in tomorrow's tutorial.) </p>
+						<p class="fragment">Now you can save this information in a data frame and repeat the procedure. </p>
+					</section>
+					
+					<section>
+						<h3>Repeating procedure - program loops in R </h3>
+						<p class="fragment">Luckily, we do not have to run this script manually for every website we want to scrape. </p>
+						<p class="fragment">As long as the websites have a similar structure (ie. the css selectors we used works on all of them), we can write a loop in R that repeats the same procedure for us. </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> x <- 0
+<span class="fragment">
+> for(i in 1:10) {
++     x <- x + i^2
++ }
+</span><span class="fragment">
+> x
+[1] 385</span>
+						</code></pre>
+						<ul>
+							<li class="fragment">Specify how many times we want loop to run. </li>
+							<li class="fragment">And a name and value that changes for each run. </li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Looping through vectors </h3>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> total <- 0
+> x <- 4:6
+> x
+[1] 4 5 6
+<span class="fragment">
+> for(i in 1:length(x)) {
++     total = total + x[i]
++ }
+</span><span class="fragment">
+> total
+[1] 15</span>
+						</code></pre>
+						<ul>
+							<li class="fragment">Here, we use the length() function to specify that the loop needs to run once for each element in the vector x. </li>
+							<li class="fragment">And the value of i is then used to subset the vector x within the loop. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Looping through websites to scrape. </h3>
+						<ul>
+							<li class="fragment">So imagine, we have a list of (similarly structured) url's we want to scrape (for instance a list of imdb films. </li>
+							<li class="fragment">We can then save these url's in a vector of strings, and loop through this vector to scrape all sites. </li>
+							<li class="fragment">But be nice, and insert a little delay between each download so you do not overburden the server you are fetching information from (and avoid being blocked from the website). </li>
+						</ul>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> film_url <- c(StarWars = "https://www.imdb.com/title/tt2527338/", LegoFilm = "http://www.imdb.com/title/tt1490017", Jumanji = "https://www.imdb.com/title/tt7975244/")
+> film_url
+                               StarWars                                LegoFilm                                 Jumanji 
+"https://www.imdb.com/title/tt2527338/"   "http://www.imdb.com/title/tt1490017" "https://www.imdb.com/title/tt7975244/" 
+						</code></pre>
+					</section>
+					<section>
+						<h3>Looping through websites to scrape. </h3>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> filmRatings <- data.frame(FilmName = c(), Rating = c())
+<span class="fragment">
+> for (i in 1:length(film_url)) {
++   site <- read_html(film_url[i])
++   rating <- html_node(site, ".eUYAaq")
++   rating <- html_text(rating)
++   filmRatings[i,"Rating"] <-rating
++   Sys.sleep(1)
++ }
+</span><span class="fragment">
+> filmRatings
+  Rating
+1    6.9
+2    7.8
+3    7.0</span>
+						</code></pre>
+					</section>
+				
+										
+				</section>
+
+				
+				
+				
+
+				<section>
+					<h1>Thanks and see you tomorrow!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
