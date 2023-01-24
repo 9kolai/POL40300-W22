@@ -1,0 +1,625 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 13</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 13 by Nikolai Gad</p>
+					<p>München, 25. January 2023</p>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Legality of web scraping </li>
+						<li>Brief introduction to APIs </li>
+						<li>Accessing APIs with R</li>
+						
+					</ul>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Course evaluations </h3>
+						<ul>
+							<li class="fragment">Deadline this Friday! (27th Jan)</li>
+							<li class="fragment">Response rate still quite low :( </li>
+							<li class="fragment">Please take 5 minutes to complete! </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Exam </h3>
+						<h4>22.02.2022, 13:00-14:30</h4>
+						<p> (by popular demand, but more information will follow next week)</p>
+						<p class="fragment">Exam will take place <strong>in person</strong> at HfP (make sure to arrive in good time!)</p>
+						<ul>
+							<li class="fragment">This week is the last week with new R functions! </li>
+							<li class="fragment">Next week's turoials will: </li>
+							<ol class="fragment">
+								<li>Recap everything you have learned. </li>
+								<li>And combine it together. </li>
+							</ol>
+						</ul>
+						
+					</section>
+					<section>
+						<h3>Exam preparation</h3>
+						<p>Advice on what to consider: </p>
+						<ul>
+							<li class="fragment">Re-read curriculum (potentially compliment with lecture slides) </li>
+							<li class="fragment">Coding in R: Go through the functions covered in tutorials. </li>
+							<li class="fragment">(Critical) interpretation of results. </li>
+							<li class="fragment">Justification of methodological choices (stemming vs. not stemming; weighting word frequencies vs. not; etc.) </li>
+						</ul>
+						<h3 class="fragment">So: Do not just focus on coding, but also critically think about what you do and the results you get. </h3>
+					</section>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Web scraping recap </h3>
+					<section>
+						<h3>Legality of web scraping </h3>
+						<ul>
+							<li class="fragment">robots.txt is an <em>informal</em> standard for specifying allowed web scraping actiity. </li>
+							<li class="fragment">So we should not rely solely on that as prove that we can scrape something. </li>
+							<li class="fragment">But it is a widely used standard. </li>
+							<li class="fragment">So provides an easy way to test and sometimes clarify what we are not allowed to do. </li>
+						</ul>
+						<h3 class="fragment">In short: If robots.txt tells you not to scrape something, don't. If it tells you it is okay (or does not tell you anything), investigate more. </h3>
+					</section>
+					<section>
+						<h3>When is web scraping the right choice? </h3>
+						<ul>
+							<li class="fragment">Timewise, it partly depends on your skills. The more experience you get, the quikcer it will be to write scraping scripts. </li>
+							<li class="fragment">Replicability </li>
+							<li class="fragment">Repetion </li>
+						</ul>
+						<p class="fragment">But that being said:</p>
+						<ul>
+							<li class="fragment">Web scraping one out of many techniques. </li>
+							<li class="fragment">R, Rvest, and CSS also just one example out of many tools available. </li>
+							<li class="fragment">Use whatever combination of tools works best for you! </li>
+							<li class="fragment">And always let your Research Question guide your choices. </li>
+						</ul>
+					</section>
+				</section>
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Brief introduction to API's </h3>
+					<section>
+						<h3>Definition </h3>
+						<ul>
+							<li class="fragment">API: Application Programming Interface</li>
+						<p class="fragment">Wikipedia's defintion: <em>"An application programming interface (API) is an interface or communication protocol between different parts of a computer program intended to simplify the implementation and maintenance of software."</em> </p>
+							<li class="fragment">Allow us to interact with web services computationally. </li>
+							<li class="fragment">Popularity of API's with web 2.0 applications. </li>
+							<li class="fragment">Web API's of interest to us: API's that gives us access to data.  </li>
+							<li class="fragment">Each API offered by different web services are different. </li>
+							<li class="fragment">So to use them, we need to look into their documentation. </li>
+							<li class="fragment">But there are also some general similarities. </li>
+					</section>
+					<section>
+						<p>Remember how a web page is rendered after requesting an HTML file: </p>
+						<p class="fragment">
+						<img src="pic/lecture11/Anonymous_thin_client.svg" alt="Computer" style="border: none; height: 5em; float: left"/>
+						 ➡ request send to server ➡
+						<img src="pic/lecture11/Dell_Poweredge_1950.svg" alt="server" style="border: none; height: 5em; float: right" />
+						</p>
+						<p class="fragment"> ⬅  html file (and other files) are returned ⬅  </p>
+						<p class="fragment">Website is rendered in your browser based on html file. </p>
+						<p class="fragment">API's works similarly, but the requests we send and the data returned to us is different. </p>
+					</section>
+					<section>
+						<img src="pic/lecture12/[Simon_Munzert,_Christian_Rubba,_Peter_Mei_ner,_Do(z-lib.org).svg" width="100%"/>
+						<q style="font-size: x-small">Illustration from Munzert, S., Rubba, C., Meißner, P., Nyhuis, D., 2014. Automated data collection with R: A practical guide to web scraping and text mining.</q>
+					</section>
+					<section>
+						<h3>Steps in using an API </h3>
+						<p>Basically there are (at least) two steps to using an API: </p>
+						<ol>
+							<li class="fragment">Send a request to a server. In our case we usually request some specific data. </li>
+							<li class="fragment">Parse the data you get back as a response. </li>
+						</ol>
+					</section>
+					<section>
+						<h3>Sending a request to an API</h3>
+						<ul>
+							<li class="fragment" data-fragment-index="1">Almost all (web) API's use HTTP (hyper text transfer protocol) requests. </li>
+							<li class="fragment" data-fragment-index="2">So in that sense, a normal request for a website through a browser can be considered a special case of an API. </li>
+							<li class="fragment" data-fragment-index="3">There are a lot of http request methods we can use: GET, POST, PUT, DELETE... </li>
+							<li class="fragment" data-fragment-index="4">But for data collection purposes, we will almost only need to make GET requests. </li>
+							<li class="fragment" data-fragment-index="5">(And luckily there are some great R packages that automates most of this stuff for us) </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Sending a GET request to an API</h3>
+						<p class="fragment" data-fragment-index="1">A GET http request to an API, generally consists of three parts: </p>
+						<p><span class="fragment" data-fragment-index="2">A URL to a domain. </span><span class="fragment" data-fragment-index="3">A path to an endpoint. </span><span class="fragment" data-fragment-index="4">And (optionally) a query, consisting of a parameter with a value. </span><span class="fragment" data-fragment-index="5">Or more parameters with values. </span></p>
+						<pre><code data-noescape style="font-size: xx-large;"><span class="fragment" data-fragment-index="2">http://example.com</span><span class="fragment" data-fragment-index="3">/api</span><span class="fragment" data-fragment-index="4">?year=2014</span><span class="fragment" data-fragment-index="5">&country=germany</span></pre></code>
+						<ul>
+							<li class="fragment" data-fragment-index="6">We need to look up documentation of each API to figure out how to construct our request. </li>
+							<li class="fragment" data-fragment-index="7">Once the web service server receives our GET request, it will process the request, and send back a reply, (hopefully) including the data we asked for (along with a lot of other information). </li>
+							<li class="fragment" data-fragment-index="8">(Strictly speaking a HTTP request also contains something called headers, and optionally a body, but you can ignore those for now)</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Recieving a reply from an API </h3>
+						<ul>
+							<li class="fragment">In theory a request can result in any kind of data being returned. </li>
+							<li class="fragment">txt files, images, vidoes, data stored in different formats. </li>
+							<li class="fragment">But most common these days are data stored in a json or xml format. </li>
+							<li class="fragment">Remember json and xml formats from week 7?</li>
+							<li class="fragment">Let us just recap quickly. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>JSON data (JavaScript Object Notation) </h2>
+						
+						<p class="fragment">An open standard file format for storing data in a text file. </p>
+						<p class="fragment">Derived from JavaScript to store data objects created in JavaScript (similar to how we can store R objects in an .RDS file)</p>
+						<p class="fragment">JSON stores data in value-attribute pairs and vectors (called arrays in JSON/JavaScript, but they are the same). </p>
+						<p class="fragment">An example: </p>
+						<pre><code class ="json hljs fragment" data-trim>
+{
+ "created_at": "Wed Oct 10 20:19:24 +0000 2018",
+ "id": 1050118621198921728,
+ "id_str": "1050118621198921728",
+ "text": "To make room for more expression, we will now count all emojis as equal—including those with gender‍‍‍ ‍‍and skin t… https://t.co/MkGjXf9aXm",
+ "user": {},  
+ "entities": {}
+}						</code></pre>
+					</section>
+					<section>
+						<h2>Why are JSON files so popular in web API's? </h2>
+						<ul>
+							<li class="fragment">JSON files are relatively light-weight. </li>
+							<li class="fragment">Compared with other file formats JSON files are easy to parse. </li>
+							<li class="fragment">JSON files are human-readable. </li>
+							<li class="fragment">However, it can be a bit of a pain to parse them in R. </li>
+						</ul> 
+					</section>
+					<section>
+						<h2>JSON data Syntax </h2>
+						<ul>
+							<li>Data is in name/value pairs</li>
+							<li>Data is separated by commas</li>
+							<li>Curly braces hold objects</li>
+							<li>Square brackets hold arrays (ie. vectors)</li>
+							<li>Data is hierachical</li>
+						</ul>
+						<p class="fragment">A simple example:</p>
+						<pre><code class ="json hljs fragment" data-trim>
+{"employees":[
+  { "firstName":"John", "lastName":"Doe" },
+  { "firstName":"Anna", "lastName":"Smith" },
+  { "firstName":"Peter", "lastName":"Jones" }
+]}
+						</code></pre>
+						<p class="fragment">Since JSON files are just plain text, you can open them in any text editor.</p>
+						<p class="fragment">However, opening a JSON file in your browser might give a better overview: </p>
+						<p class="fragment"><a href="inaugural_sample.json">Inaugural Speeches example </a>
+						<a href="twitter-example.json">Tweets example </a></p>
+					</section>
+					<section>
+						<h2>XML files </h2>
+						<p class="fragment">An XML file uses similar syntax to an html file, but is used to store data. </p>
+						<p class="fragment">It consists of different data fields (defined by a start and end xml tag), that can be nesteed within each other: </p>
+						<pre><code class ="xml hljs fragment" data-trim>
+<employees>
+  <employee>
+    <firstName>John</firstName> <lastName>Doe</lastName>
+  </employee>
+  <employee>
+    <firstName>Anna</firstName> <lastName>Smith</lastName>
+  </employee>
+  <employee>
+    <firstName>Peter</firstName> <lastName>Jones</lastName>
+  </employee>
+</employees>
+						</code></pre>
+						<p class="fragment">XML files are generally considered harder to parse than JSON files, but it really depend on the structure of each file. </p>
+						<p class="fragment">As you might remember, the readtext package can also load text from simple xml files. So you have already tried to parse these. </p>
+					</section>
+					<section>
+						<h3>Steps in using an API </h3>
+						<p>So basically there are (at least) two steps to using an API: </p>
+						<ol>
+							<li class="fragment">Construct a http request with the correct domain, endpoint, and query. </li>
+							<li class="fragment">Parse the data you get back as a response. </li>
+						<p class="fragment">However, sometimes there is an additional step involved: </p>
+							<li class="fragment">Authentication of yourself to the API. </li>
+						</ol>
+					</section>
+					<section>
+						<h2>Authentication and Authorisation </h2>
+						<p class="fragment">Authentication</p>
+						<ul>
+							<li class="fragment">Many web API's wants to know who you are before they give you their data. </li>
+							<li class="fragment">This means that you will have to register yourself with their service and then you get some personal credentials. </li>
+							<li class="fragment">These credentials are used to <em>authenticate</em> yourself when you send a request to an API. </li>
+							<li class="fragment">A lot of the time you can register for free. Sometimes the service will charge you for using their data. </li>
+						</ul>
+						<p class="fragment">Authorisation</p>
+						<ul>
+							<li class="fragment">To complicate matters further, you can also <em>authorise</em> a third party (or the script you are writing) to authenticate itself on your behalf (but without using your personal credentials everytime a request is sent). </li>
+							<li class="fragment">You have probably tried to do this indirectly anytime you use a third party app with your email, social media account or other web services. </li>
+						</ul>
+					</section>
+					<section>
+						<h2>Authentication and Authorisation </h2>
+						<ul>
+							<li class="fragment">There are many different standards for authentication and authorisation, but OAuth has become most common. </li>
+							<li class="fragment">Almost all social media requires you to authenticate and authorise yourself to use their API's. </li>
+							<li class="fragment">Which means you need an account with them to use their API. </li>
+							<li class="fragment">So we will not do that in this course. </li>
+							<li class="fragment">But the httr package in R, which we will use today includes several functions to make it easier to deal with OAuth authorisation and authentication if you ever need it. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Personal data, privacy legislation, and API's </h3>
+						<p class="fragment">In relation to the GDPR, your role changes when you collect second-hand data through an API:</p>
+						<ul>
+							<li class="fragment">Because the service is the original data collector and not you. </li>
+							<li class="fragment">Thus, some of the responsibility of providing information about the data collection (and that it will be shared with you) relies on the service. </li>
+							<li class="fragment">However, we still have an obligation to consider whether people have been informed properly about our collection of their data, and to have a lawful basis for collecting it. </li>
+							<li class="fragment">And here we also need to consider the terms under which the web service provides the data to us (usually we are not allowed to do whatever we want with the data). </li>
+							<li class="fragment">And finally, regardless of our legal obligations, we should still consider the ethical aspects of our data collection and processing!!</li>
+						</ul>
+						<cite style="font-size: small; font-style: italic;">Kotsios, A., Magnani, M., Rossi, L., Shklovski, I., & Vega, D. (2019). An Analysis of the Consequences of the General Data Protection Regulation (GDPR) on Social Network Research. ArXiv:1903.03196 [Cs]. http://arxiv.org/abs/1903.03196</cite>
+					</section>
+					<section>
+						<h3>Where to find (interesting) API's</h3>
+						<ul>
+							<li class="fragment">Usually, you should be guided by your research question! </li>
+							<li class="fragment">But there are a couple of good resources on available API's: </li>
+							<li class="fragment"><a href="https://www.programmableweb.com/apis">https://www.programmableweb.com/apis</a></li>
+							<li class="fragment"><a href="https://cran.r-project.org/web/views/WebTechnologies.html">CRAN Task view on web technologies and services. </a></li>
+							<li class="fragment"><a href="https://ropensci.org/">https://ropensci.org/</a></li>
+						</ul>
+					</section>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">API's in R: An example  </h3>
+					<section>
+						<h3>Packages we need</h3>
+						<p class="fragment">We will need two R packages: </p>
+						<ol>
+							<li class="fragment">"httr" for sending GET requests and recieving the response. </li>
+							<li class="fragment">"jsonlite" to parse the json formatted data we get back. </li>
+						</ol>
+						<p class="fragment">Luckily, both of these should already have been installed, when you installed other packages we have already used. </p>
+						<p class="fragment">So we start by loading these packages: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> library(httr)
+> library(jsonlite)
+						</code></pre>
+					</section>
+					<section>
+						<h3>Example case</h3>
+						<ul>
+							<li class="fragment">In this example we will query an API for the EUR-Lex database which holds records on all EU legislation. </li>
+							<li class="fragment">The API is build by Buhl & Rasmussen and documented on their website here: <a href="http://api.epdb.eu/">http://api.epdb.eu/</a>.</li>
+							<li class="fragment">So it is not an official EU database. There are a lot of those as well though. </li>
+							<li class="fragment">But the API is relatively well-documented, so good for an example. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Making a simple GET request </h3>
+						<ul>
+							<li class="fragment" data-fragment-index="1">First we save the url to the domain and path to the endpoint, we need. </li>
+							<li class="fragment" data-fragment-index="2">Then we use the GET function from the httr package to send our request. </li>
+							<li class="fragment" data-fragment-index="3">And finally, we can print a short summary of the result that was returned. </li>
+						</ul>
+						<pre><code class ="r hljs" data-trim data-noescape>
+<span class="fragment" data-fragment-index="1">> url <- "http://api.epdb.eu"
+> path <- "eurlex/directory_code"
+</span>
+<span class="fragment" data-fragment-index="2">
+> rawResult <- GET(url = url, path = path)
+</span>
+<span class="fragment" data-fragment-index="3">
+> rawResult
+Response [http://api.epdb.eu/eurlex/directory_code/]
+  Date: 2020-01-15 11:09
+  Status: 200
+  Content-Type: application/json
+  Size: 121 kB</span>
+						</code></pre>
+						<p class="fragment">Here, we did not specify any query to be added to the http request, because we have looked up the documentation, which told us that just requesting this endpoint with no query parameters, will return a list of all the document classifiers used for different policy areas in the EUR-lex database. </p>
+					</section>
+					<section>
+						<h3>Inspecting result </h3>
+						
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+<span classs="fragment">> class(rawResult)
+[1] "response"
+</span><span class="fragment">
+> length(rawResult)
+[1] 10
+</span><span class="fragment">
+> summary(rawResult)
+            Length Class       Mode       
+url              1 -none-      character  
+status_code      1 -none-      numeric    
+headers          6 insensitive list       
+all_headers      2 -none-      list       
+cookies          7 data.frame  list       
+content     121493 -none-      raw        
+date             1 POSIXct     numeric    
+times            6 -none-      numeric    
+request          7 request     list       
+handle           1 curl_handle externalptr</span>
+						</code></pre>
+					</section>
+					<section>
+						<h3>Inspecting result: </h3>
+						
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> rawResult$content
+   [1] 7b 22 30 31 2e 30 37 2e 30 30 2e 30 30 22 3a 7b 22 64 69 72 65 63 74 6f 72 79 5f 63 6f 64 65 22 3a 22 30 31 2e 30 37 2e 30
+  [42] 30 2e 30 30 22 2c 22 75 72 6c 22 3a 22 68 74 74 70 3a 5c 2f 5c 2f 61 70 69 2e 65 70 64 62 2e 65 75 5c 2f 65 75 72 6c 65 78
+  [83] 5c 2f 64 69 72 65 63 74 6f 72 79 5f 63 6f 64 65 5c 2f 3f 64 63 3d 30 31 2e 30 37 2e 30 30 2e 30 30 26 6b 65 79 3d 22 2c 22
+ [124] 6e 75 6d 62 65 72 5f 6f 66 5f 64 6f 63 75 6d 65 6e 74 73 22 3a 22 31 32 36 22 2c 22 6c 69 73 74 5f 6f 66 5f 61 63 74 73 5f
+ [165] 69 6e 66 6f 72 63 65 5f 65 75 72 6c 65 78 22 3a 22 68 74 74 70 3a 5c 2f 5c 2f 65 75 72 2d 6c 65 78 2e 65 75 72 6f 70 61 2e
+ [206] 65 75 5c 2f 52 65 73 75 6c 74 2e 64 6f 3f 52 65 63 68 54 79 70 65 3d 52 45 43 48 5f 72 65 70 65 72 74 6f 69 72 65 26 72 65
+ [247] 70 3d 30 31 30 37 2a 26 72 65 70 69 68 6d 3d 22 7d 2c 22 30 31 2e 31 30 2e 30 30 2e 30 30 22 3a 7b 22 64 69 72 65 63 74 6f
+ [288] 72 79 5f 63 6f 64 65 22 3a 22 30 31 2e 31 30 2e 30 30 2e 30 30 22 2c 22 75 72 6c 22 3a 22 68 74 74 70 3a 5c 2f 5c 2f 61 70
+ [329] 69 2e 65 70 64 62 2e 65 75 5c 2f 65 75 72 6c 65 78 5c 2f 64 69 72 65 63 74 6f 72 79 5f 63 6f 64 65 5c 2f 3f 64 63 3d 30 31
+ [ reached getOption("max.print") -- omitted 120493 entries ]
+						</code></pre>
+						<p class="fragment">It turns out the content of the result (when using the GET function from httr) is always stored in raw binary code. </p>
+						
+					</section>
+					<section>
+						<h3>Decoding the result </h3>
+						<p class="fragment">So we use the httr function, content(), to convert the data into characters: </p>
+						<pre><code class ="r hljs fragment" data-trim>
+> rawCont <- content(rawResult, as = "text")
+> rawCont
+[1] "{\"01.07.00.00\":{\"directory_code\":\"01.07.00.00\",\"url\":\"http:\\/\\/api.epdb.eu\\/eurlex\\/directory_code\\/?dc=01.07.00.00&key=\",\"number_of_documents\":\"126\",\"list_of_acts_inforce_eurlex\":\"http:\\/\\/eur-lex.europa.eu\\/Result.do?RechType=RECH_repertoire&rep=0107*&repihm=\"},\"01.10.00.00\":{\"directory_code\":\"01.10.00.00\",\"url\":\"http:\\/\\/api.epdb.eu\\/eurlex\\/directory_code\\/?dc=01.10.00.00&key=\",\"number_of_documents\":\"191\",\"list_of_acts_inforce_eurlex\":\"http:\\/\\/eur-lex.europa.eu\\/Result.do?RechType=RECH_repertoire&rep=011*&repihm=\"},\"01.20.00.00\":{\"directory_code\":\"01.20.00.00\",\"url\":\"http:\\/\\/api.epdb.eu\\/eurlex\\/directory_code\\/?dc=01.20.00.00&key=\",\"number_of_documents\":\"69\",\"list_of_acts_inforce_eurlex\":\"http:\\/\\/eur-lex.europa.eu\\/Result.do?RechType=RECH_repertoire&rep=012*&repihm=\"},\"01.30.00.00\":{\"directory_code\":\"01.30.00.00\",\"url\":\"http:\\/\\/api.epdb.eu\\/eurlex\\/directory_code\\/?dc=01.30.00.00&k... 
+> nchar(rawCont)
+[1] 121493
+						</code></pre>
+						<p class="fragment">Now, we can see that this looks like json data. </p>
+						<p class="fragment">And we can also see that it is a relatively long json file. </p>
+					</section>
+					<section>
+						<h3>Parsing json result </h3>
+						<p class="fragment">We can also use the content() function to "parse" the json data. </p>
+						<p class="fragment">This basically just means that we turn the plain json text into something more useful, in this case an R list: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> ListCont <- content(rawResult, as = "parsed"<span class="fragment">, simplifyVector = TRUE</span>)
+<span class="fragment">
+> class(ListCont)
+[1] "list"
+</span><span class="fragment">
+> length(ListCont)
+[1] 462
+</span><span class="fragment">
+> head(summary(ListCont))
+            Length Class  Mode
+01.07.00.00 4      -none- list
+01.10.00.00 4      -none- list
+01.20.00.00 4      -none- list
+01.30.00.00 4      -none- list
+01.40.00.00 4      -none- list
+01.40.10.00 4      -none- list
+</span><span class="fragment">
+> ListCont[[1]]
+$directory_code
+[1] "01.07.00.00"
+
+$url
+[1] "http://api.epdb.eu/eurlex/directory_code/?dc=01.07.00.00&key="
+
+$number_of_documents
+[1] "126"
+
+$list_of_acts_inforce_eurlex
+[1] "http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=0107*&repihm="</span>
+						</code></pre>
+					</section>
+					<section>
+						<h3>List elements </h3>
+						<ul>
+							<li class="fragment">From here, it is basically a matter of subsetting lists in R to get the data we want. </li>
+							<li class="fragment">We can subset R lists with double brackets: [[2]] or [["name of element"]] </li>
+							<li class="fragment">However, in this case it would be easier to have a data frame to work with. </li>
+							<li class="fragment">So we use a handy little function called "do.call" to do turn our list into a data frame: </li>
+							
+						</ul>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> DfCont <- do.call(
++   what = "rbind",
++   args = lapply(ListCont, as.data.frame))
+<span class="fragment">
+> head(DfCont)
+            directory_code                                                           url number_of_documents
+01.07.00.00    01.07.00.00 http://api.epdb.eu/eurlex/directory_code/?dc=01.07.00.00&key=                 126
+01.10.00.00    01.10.00.00 http://api.epdb.eu/eurlex/directory_code/?dc=01.10.00.00&key=                 191
+01.20.00.00    01.20.00.00 http://api.epdb.eu/eurlex/directory_code/?dc=01.20.00.00&key=                  69
+01.30.00.00    01.30.00.00 http://api.epdb.eu/eurlex/directory_code/?dc=01.30.00.00&key=                  24
+01.40.00.00    01.40.00.00 http://api.epdb.eu/eurlex/directory_code/?dc=01.40.00.00&key=                 382
+01.40.10.00    01.40.10.00 http://api.epdb.eu/eurlex/directory_code/?dc=01.40.10.00&key=                 514
+                                                               list_of_acts_inforce_eurlex
+01.07.00.00  http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=0107*&repihm=
+01.10.00.00   http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=011*&repihm=
+01.20.00.00   http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=012*&repihm=
+01.30.00.00   http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=013*&repihm=
+01.40.00.00   http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=014*&repihm=
+01.40.10.00 http://eur-lex.europa.eu/Result.do?RechType=RECH_repertoire&rep=01401*&repihm=</span>
+						</code></pre>
+					</section>
+					<section>
+						<h3>Find all the classifiers related to Energy </h3>
+						<ul>
+							<li class="fragment">So now we have a nice data base with all the classifiers as well as some information about them. </li>
+							<li class="fragment">Looking up the documentation of the classifiers, it turns out that those classifiers that start with 12.xx.xx.xx are all related to energy policies. </li>
+							<li class="fragment">Knowing this we can use the stringR package to test if each classifiers begins with 12.: </li>							
+						</ul>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> library(stringr)
+> isEnergy <- str_detect(DfCont$directory_code, "^12")
+> isEnergy
+  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [21] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [41] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [61] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [81] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[101] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[141] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[161] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[181] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[201] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[221] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[241] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[261] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[281] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[301] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[321] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[341]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+[361] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[381] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[401] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[421] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[441] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[461] FALSE FALSE
+						</code></pre>
+						<p class="fragment">For this purpose I use a little regular expression anchor: ^ This indicates that the "12" should only match the beginning of each character string. </p>
+					</section>
+					<section>
+						<h3>All classifiers related to energy </h3>
+						<p class="fragment">Now we can simply use the isEnergy variable to subset the dataframe with all the classifiers to only get the ones related to energy policies. </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> EnergyClass <- DfCont[isEnergy, "directory_code"]
+> EnergyClass <- as.character(EnergyClass)
+> EnergyClass
+ [1] "12.07.00.00" "12.10.00.00" "12.10.10.00" "12.10.20.00" "12.20.10.00" "12.20.20.00" "12.20.30.00" "12.20.40.00"
+ [9] "12.30.00.00" "12.40.00.00" "12.40.10.00" "12.40.20.00" "12.40.30.00" "12.40.40.00" "12.40.50.00" "12.50.10.00"
+[17] "12.50.20.00" "12.50.30.00" "12.60.00.00"
+> length(EnergyClass)
+[1] 19
+						</code></pre>
+					</section>
+					<section>
+						<h3>A GET request with query parameters. </h3>
+						<p class="fragment">Remember the structure of a GET request: </p>
+						<p class="fragment">http://domain.com/path?queryParameter1=value&queryParameter2=value</p>
+						<p class="fragment">So what we want is something along the lines of http://api.epdb.eu/eurlex/directory_code?dc=12.07.00.00</p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> result <- GET(url = url, path = path, query = list(dc = EnergyClass[1]))
+> result
+Response [http://api.epdb.eu/eurlex/directory_code/?dc=12.07.00.00]
+  Date: 2020-01-15 11:54
+  Status: 200
+  Content-Type: application/json
+  Size: 48.4 kB
+
+> resultRaw <- result$content
+> resultList <- content(resultRaw, as = "parsed", simplifyVector = TRUE)
+ 
+						</code></pre>
+					</section>
+					<section>
+						<h3>Inspect result:</h3>
+						
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> summary(resultList)
+       Length Class  Mode
+191989 19     -none- list
+231304 19     -none- list
+239706 19     -none- list
+243790 19     -none- list
+255132 19     -none- list
+255408 19     -none- list
+259186 19     -none- list
+259487 19     -none- list
+261149 19     -none- list
+266950 19     -none- list
+277270 19     -none- list
+> length(resultList)
+[1] 11
+> names(resultList[[1]])
+ [1] "form"                "title"               "api_url"             "eurlex_perma_url"    "doc_id"             
+ [6] "date_document"       "of_effect"           "end_validity"        "oj_date"             "directory_codes"    
+[11] "legal_basis"         "addressee"           "internal_ref"        "additional_info"     "text_url"           
+[16] "prelex_relation"     "relationships"       "eurovoc_descriptors" "subject_matter"  
+						</code></pre>
+					</section>
+					<section>
+						<h3>Looping through all the 19 policy classifiers </h3>
+						
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> allResults <- list()
+> for (i in 1:length(EnergyClass)) {
++   result <- GET(url = url, path = path, query = list(dc = EnergyClass[i]))
++   result <- content(result, as = "parsed", simplifyVector = TRUE)
++   allResults[[i]] <- result
++   Sys.sleep(time = 0.2)
++ }
+> length(allResults)
+[1] 19
+						</code></pre>
+					</section>
+										
+				</section>
+				
+				
+								
+				
+
+				<section>
+					<h1>Thanks and see you tomorrow!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
