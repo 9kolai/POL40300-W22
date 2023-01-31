@@ -1,0 +1,929 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>POL40300: Lecture 14</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<link rel="stylesheet" href="dist/reveal-override.css"/>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+		<style>
+			.blink {
+				animation: blink-animation 1s steps(5, start) infinite;
+				-webkit-animation: blink-animation 1s steps(5, start) infinite;
+			}
+			@keyframes blink-animation {
+				to {
+					visibility: hidden;
+				}
+			}
+			@-webkit-keyframes blink-animation {
+				to {
+					visibility: hidden;
+				}
+			}
+		</style>
+			
+	</head>
+	<body>
+		<header><img src="pic/LogoMainBlue2.png" style="width:100% "></header>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="pic/BGMainBlue.gif" style="color:white">
+					<h1  style="color:white">POL40300: Computational Methods</h1>
+					<p>Lecture 12 by Nikolai Gad</p>
+					<p>München, 1. February 2023</p>
+				</section>
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Today's lecture </h3>
+					<ul>
+						<li>Practicals </li>
+						<li>Exam / home assignment </li>
+						<li>Overview of R packages </li>
+						<li>Loops and subsetting R lists </li>
+						<li>Help options in R </li>
+						<li>Steps in a typical computational analysis project </li>
+						<li>Key concepts from the course </li>
+					</ul>
+				</section>
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Practicals </h3>
+					
+					<section>
+						<h3>Exam preparation</h3>
+						<p>Advice on what to consider: </p>
+						<ul>
+							<li class="fragment">Re-read curriculum (potentially compliment with lecture slides) </li>
+							<li class="fragment">Coding in R: Go through the functions covered in tutorials. </li>
+							<li class="fragment">(Critical) interpretation of results. </li>
+							<li class="fragment">Justification of methodological choices (stemming vs. not stemming; weithing word frequencies vs. not; etc.) </li>
+						</ul>
+						<h3 class="fragment">So: Do not just focus on coding, but also critically think about what you do and the results you get. </h3>
+					</section>
+				</section>
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">The exam - home assignment </h3>
+					<section>
+						<h3>Practicalities </h3>
+						<ul>
+							<li class="fragment">90 minutes exam at HfP, <strong>room H.103</strong>: </li>
+							<ul>
+								<li class="fragment">Wednesday <strong>22nd February</strong> 13.00-14.30</li>
+								<li class="fragment">So make sure to arrive <strong>12.45</strong> very latest! </li>
+							</ul>
+							<li class="fragment">A special Moodle page will be set up for everyone who are registered for the exam: </li>
+							<ul>
+								<li class="fragment">The assignment will be published on this Moodle page. </li>
+								<li class="fragment">And you need to hand in your assignment through this Moodle page. </li>
+							</ul>
+							<li class="fragment">Two documents to hand in: A written report and an R script. </li>
+							<li class="fragment">Written report can be submitted as a .doc, .docx or .pdf file. </li>
+							<li class="fragment">You are allowed to use the Internet, your own notes, and books, but it is an individual assignment that you have to answer independently:</li>
+							<ul>
+								<li class="fragment">You are not allowed to contact other people during the exam.</li>
+								<li class="fragment">You are not allowed to submit machine generated text or get help from text generating software (such as fx. ChatGPT or similar AI tools)</li>
+								<li class="fragment">(Any kind of copy pasting is considered plagiarism/cheating and could ultimately get you expelled) </li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h3>Structure of the exam questions </h3>
+						<ul>
+							<li class="fragment">The exam will consist of two parts: </li>
+							<ol>
+								<li class="fragment">A number of concrete questions/tasks that you need to reflect on. </li>
+								<li class="fragment">One bigger task that requires you to do some (simple) analysis with data provided and write a short report. </li>
+							</ol>
+							<li class="fragment">You can recieve a maximum of 20 points for each part (so 40 points in total)</li>
+							<li class="fragment">And you need 21 points to pass. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Written report </h3>
+						<ul>
+							<li class="fragment">An open question and some data for you to work with. </li>
+							<li class="fragment">The report should include the following three elements: </li>
+							<ol>
+								<li class="fragment">Description of a research design: How would you explore a specific research question? </li>
+								<li class="fragment">Reporting and interpretation of findings from some (simple) data analysis (of your choice). </li>
+								<li class="fragment">A brief discussion of <em>relevant</em> strengths and weaknesses of your study design. </li>
+							</ol>
+							<li class="fragment">Justify your choices! </li>
+							<li class="fragment">Any use of methods from class will satisfy, but more advanced methods (from the class) will recieve higher marks (if applied correctly). </li>
+							<li class="fragment"><strong>The report should be <em>concise</em> and to the point!</strong> </li>
+							<li class="fragment">The <em>point</em> here is the three elements above! (so long essays about the relevance of the RQ will not give you an advantage - methodological considerations will) </li>
+							<li class="fragment">You can cite sources from the course to strengthen a point if you want to, but no need to cite additional literature. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Marking of written report </h3>
+						<table>
+							<tr>
+								<th>Points </th>
+								<th>Description </th>
+							</tr>
+							<tr>
+								<td>20-19</td>
+								<td>Outstanding use of complex methods in a relevant way with no mistakes. </td>
+							</tr>
+							<tr>
+								<td>18-17</td>
+								<td>Very good use of methods and convincing justifications. </td>
+							</tr>
+							<tr>
+								<td>16-15</td>
+								<td>Good use of methods and convincing justifications. </td>
+							</tr>
+							<tr>
+								<td>14-13</td>
+								<td>Good use of methods with no major mistakes. </td>
+							</tr>
+							<tr>
+								<td>12-11</td>
+								<td>Good use of methods, but with some mistakes. </td>
+							</tr>
+							<tr>
+								<td>10-9</td>
+								<td>Satisfactory, but with mistakes and/or incomplete parts. </td>
+							</tr>
+							<tr>
+								<td>0-8</td>
+								<td>Incomplete in substantial parts with essential mistakes. </td>
+							</tr>
+						</table>
+						</br>
+						<ul>
+							<li class="fragment">Important that you include <em>all</em> three parts so your report is not incomplete! </li>
+							<li class="fragment">Use of methods and justifications should be your main focus. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Exam submission </h3>
+						<p class="fragment">Consists of two documents: </p>
+						<ol>
+							<li class="fragment">A written document: This is where you answer <em>all</em> the exam questions and write your report <span class="fragment">(including your results!)</span>. </li>
+							<li class="fragment">An R script (.R extension): This is where you document how you have got the results for your answers and written report. </li>
+						</ol>
+						<p class="fragment">The complete written document (including all answers) should be a maximum of 10 pages (including figures and tables). </p>
+						<p class="fragment">(this means that 10 pages is the absolute maximum length! So shorter is also fine) </p>
+					</section>
+					<section>
+						<h3>Exam submission </h3>
+						<p class="fragment">Your R script should: </p>
+						<ul>
+							<li class="fragment">...run from start to end without returning any errors from a fresh R session. </li>
+							<ul>
+								<li class="fragment">So make sure you load all the packages you use in the script (using the library() function)</li>
+								<li class="fragment">And make sure you do not refer to variables you have not defined in the script. </li>
+								<li class="fragment">If you have time, try to delete everything in your environment ( rm(list = ls()) ) and run the whole script before submitting it. </li>
+							</ul>
+							<li class="fragment">...be well structured, so it is clear which code is used to answer which questions. </li>
+							<li class="fragment">...include enough comments for the marker to understand what you are trying to do (especially in case that is not what you actually do). </li>
+							<li class="fragment">...only use packages that have been introduced in this course (list on following slide and uploaded to Moodle)</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Marking scheme </h3>
+						<img src="pic/lecture13/MarkingScale.png" />
+					</section>
+				</section>
+				
+				
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Overview of R packages </h3>
+					<section>
+						<h3>Packages</h3>
+						<p>Overview also uploaded to Moodle. </p>
+						<ul>
+							<li class="fragment">Base, utils, and stats (all build-in to R) </li>
+							<li class="fragment">stringR</li>
+							<li class="fragment">Quanteda</li>
+							<ul class="fragment">
+								<li>quanteda</li>
+								<li>quanteda.textstats</li>
+								<li>quanteda.textplots</li>
+								<li>(quanteda.textmodels)</li>
+							</ul>
+							<li class="fragment">readtext</li>
+							<li class="fragment">robotstext</li>
+							<li class="fragment">rvest</li>
+							<li class="fragment">(xml2)</li>
+							<li class="fragment">httr</li>
+							<li class="fragment">(jsonlite)</li>
+						</ul>
+						<p class="fragment">These are all the packages we have used in this coursee. And it is the only packages you should use for the exam! </p>
+					</section>
+				</section>
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Recapping a few R functionalities </h3>
+					<section>
+						<h3>For loops</h3>
+						<p class="fragment">In the last two weeks you have had to use for loops to repeat the same task many times, so let us just go through the syntax of a typical for loop: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> for(i in 1:5) {
+	print(1:i)
+}
+[1] 1
+[1] 1 2
+[1] 1 2 3
+[1] 1 2 3 4
+[1] 1 2 3 4 5
+						</code></pre>
+					</section>
+					<section>
+						<h3>Looping through a vector </h3>
+						<p class="fragment">So we can use this to loop through all the values of a vector (for example a vector consisting of url's) </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+vecEx <- c("url1", "url2", "url3")
+<span class="fragment">
+> for (i in 1:length(vecEx)) {
++   print(vecEx[i])
++ }
+[1] "url1"
+[1] "url2"
+[1] "url3" </span>
+						</code></pre>
+						<p class="fragment">Instead of just printing out the values of each element of the vector, we would typically do some computation with these values. </p>
+					</section>
+					<section>
+						<h3>Save results from each loop in a variable. </h3>
+						<p class="fragment">Often we want to save some result from the calculation the loop performs for each circulation of the loop. </p>
+						<p class="fragment">To do that, we need to <em>initiate</em> the variable we want to save the results in before running the loop; typically a vector, data frame or list. </p>
+						<p class="fragment">That means we create an empty variable (vector/data frame/list) where we can save the results in: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> results <- c()
+<span class="fragment">
+> for (i in 1:length(vecEx)) {
++   n <- str_c(vecEx[i], " is a link. ")
++   results[i] <- n
++ }
+</span><span class="fragment">
+> results
+[1] "url1 is a link. " "url2 is a link. " "url3 is a link. "</span>
+						</code></pre>
+					</section>
+					<section>
+						<h3>Sub setting R lists. </h3>
+						<p class="fragment">Sometimes we have lists nested within lists. List of lists, where we want to only select the nth element of each sublist: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> head(summary(listResultECD))
+       Length Class  Mode
+146143 19     -none- list
+273647 19     -none- list
+273564 19     -none- list
+273487 19     -none- list
+273483 19     -none- list
+273237 19     -none- list
+<span class="fragment">
+> summary(listResultECD[[1]])
+                    Length Class      Mode     
+form                1      -none-     character
+title               1      -none-     character
+api_url             1      -none-     character
+eurlex_perma_url    1      -none-     character
+doc_id              1      -none-     character
+date_document       1      -none-     character
+of_effect           1      -none-     character
+end_validity        1      -none-     character
+oj_date             1      -none-     character
+directory_codes     1      data.frame list     
+legal_basis         1      data.frame list     
+addressee           1      -none-     character
+internal_ref        1      -none-     character
+additional_info     1      -none-     character
+text_url            1      -none-     character
+prelex_relation     0      -none-     list     
+relationships       3      data.frame list     
+eurovoc_descriptors 1      data.frame list     
+subject_matter      1      data.frame list  
+</span>
+						</code></pre>
+						
+					</section>
+					<section>
+						<h3>Sub setting R lists. </h3>
+						<p class="fragment">In this case we can use a little trick with the lapply function you encountered last week. </p>
+						<p class="fragment">Imagine we want the 4th elment of each sub list within the list listResultECB: </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> lapply(listResultECD, "[[", 4)
+$`146143`
+[1] "http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:22007A0116(01):EN:NOT"
+
+$`273647`
+[1] "http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:32011O0003R(02):EN:NOT"
+
+$`273564`
+[1] "http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:32011D0008(01)R(01):EN:NOT"
+
+$`273487`
+[1] "http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:32010D0022R(01):EN:NOT"
+
+$`273483`
+[1] "http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:32010D0015(01):EN:NOT"
+
+$`273237`
+[1] "http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:32004D0012(01)R(01):EN:NOT"
+						</code></pre>
+					</section>
+					<section>
+						<h3>Sub setting R lists. </h3>
+						<p class="fragment">We can also use the name of the element we want to extract from each sub list:  </p>
+						<pre><code class ="r hljs fragment" data-trim data-noescape>
+> lapply(listResultECD, "[[", "title")
+$`146143`
+[1] "Memorandum of Understanding amending the Memorandum of Understanding on a Code of Conduct for the members of the Governing Council"
+
+$`273647`
+[1] "This corrigendum does not concern the English version."
+
+$`273564`
+[1] "This corrigendum does not concern the English version."
+
+$`273487`
+[1] "This corrigendum does not concern the English version."
+
+$`273483`
+[1] "2010/574/EU: Decision of the European Central Bank of 21 September 2010 concerning the administration of EFSF loans to Member States whose currency is the euro (ECB/2010/15)"
+
+$`273237`
+[1] "This corrigendum does not concern the English version."
+						</code></pre>
+					</section>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Apply functions </h3>
+						<p class="fragment">We have used several functions from the apply family in R: </p>
+						<ul>
+							<li class="fragment"><strong>apply:</strong>Applies a function to either each row or each column of a data frame. </li>
+							<li class="fragment"><strong>tapply:</strong>Applies a function to a variable, depending on the value of another variable in a data frame. </li>
+							<li class="fragment"><strong>lapply:</strong>Applies a function to each element of a list (and always returns a list). </li>
+							<li class="fragment"><strong>(do.call:</strong>Takes a list of arguments as input to a function. <strong>)</strong></li>
+						<p class="fragment">And then there is also...</p>
+							<li class="fragment"><strong>sapply:</strong> ("smart apply") Applies a function to each element of a list, and returns "the most appropriate" data format. </li>
+						</ul>
+					</section>
+				</section>
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Help options in R </h3>
+					<section>
+						<h3>Help file for each function </h3>
+						<ul>
+							<li class="fragment">If you do not remember what a function does or which input it takes. </li>
+							<li class="fragment">Access by typing ?functionName, help(functionName) or typing the function name in RStudio and press F1. </li>
+							<li class="fragment">Or use search bar in R studio's help pane. </li>
+							<li class="fragment">Illustration: sum()</li>
+							<li class="fragment">Use the example() function to show examples. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Finding the name of a function </h3>
+						<ul>
+							<li class="fragment">Use search function in RStudio's help pane: Unfortunately you can only search one word here. </li>
+							<li class="fragment">List all functions from a package: </li>
+							<ul>
+								<li class="fragment">Package name + :: and tab in RStudio. </li>
+								<li class="fragment">help(package = "packageName")</li>
+							</ul>
+							<li class="fragment">Searching for help in R: Also use help.search("searc string") (but doesn't always work well) </li>
+							<li class="fragment">Use help.start() to get a list of all packages and help files installed. </li>
+						</ul>
+					</section>
+				</section>
+				
+				
+								
+				
+				
+				
+
+
+				<section>
+					<h3 style="color: rgb(0,101,189)">Steps in a typical computational analysis project </h3>
+					<section>
+						<h3 class="fragment">Generally, we can split any project into 4 overall steps: </h3>
+						<ol>
+							<li class="fragment">Develop research question. </li>
+							<li class="fragment">Collect data. </li>
+							<li class="fragment">Data preparation (pre-processing) </li>
+							<li class="fragment">Analysis </li>
+						</ol>
+					</section>
+					<section>
+						<h3>Connection between steps:  </h3>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   id="svg2"
+   viewBox="0 0 623.89525 313.91435"
+   height="88.593605mm"
+   width="176.0771mm">
+  <defs
+     id="defs4">
+    <marker
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker13911"
+       style="overflow:visible">
+      <path
+         id="path13913"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker13393"
+       refX="0"
+       refY="0"
+       orient="auto">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         id="path13395" />
+    </marker>
+    <marker
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker13351"
+       style="overflow:visible">
+      <path
+         id="path13353"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         id="path12597" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-2"
+       refX="0"
+       refY="0"
+       orient="auto">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         id="path12597-5" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker13393-4"
+       refX="0"
+       refY="0"
+       orient="auto">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         id="path13395-3" />
+    </marker>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-63.710057,-203.18186)"
+     id="layer1">
+    <text
+       id="text8068"
+       y="291.27133"
+       x="319.82153"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="291.27133"
+         x="319.82153"
+         id="tspan8070"
+         class="fragment" data-fragment-index="1">RQ</tspan></text>
+    <text
+       id="text8072"
+       y="423.34283"
+       x="177.75641"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       class="fragment" data-fragment-index="2"><tspan
+         y="423.34283"
+         x="184.1236"
+         id="tspan8074">Type of </tspan><tspan
+         id="tspan8076"
+         y="473.34283"
+         x="177.75641">analysis</tspan></text>
+    <text
+       id="text8078"
+       y="422.7276"
+       x="522.55072"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       class="fragment" data-fragment-index="3"><tspan
+         y="422.7276"
+         x="528.91791"
+         id="tspan8080">Data </tspan><tspan
+         id="tspan8082"
+         y="472.7276"
+         x="522.55072">preparation</tspan></text>
+    <text
+       id="text8084"
+       y="327.44489"
+       x="544.59979"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       class="fragment" data-fragment-index="4"><tspan
+         style="font-size:25px;opacity:0"
+         id="tspan8088"
+         y="327.44489"
+         x="544.59979">(Data collection)</tspan></text>
+    <text
+       id="text8090"
+       y="257.60907"
+       x="431.18835"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       class="fragment" data-fragment-index="5"><tspan
+         style="font-size:25px"
+         y="257.60907"
+         x="431.18835"
+         id="tspan8092">(Data availability)</tspan></text>
+    <g
+       transform="translate(-7.6809005,6)"
+       id="g13339">
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+         d="m 351.39438,309.21513 -75.9644,57.15416"
+         id="path12588" 
+         class="fragment" 
+         data-fragment-index="2"/>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2)"
+         d="m 364.58705,309.21513 75.9644,57.15416"
+         id="path12588-4" 
+         class="fragment" data-fragment-index="3"/>
+    </g>
+    <path
+       id="path13343"
+       d="m 399.35566,283.31317 37.62046,26.76841"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker13351)" 
+       class="fragment" data-fragment-index="4"/>
+    <path
+       id="path13385"
+       d="m 525.23951,341.91427 0,37.62047"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker13393)" 
+       class="fragment" data-fragment-index="4"/>
+    <path
+       id="path13385-1"
+       d="m 524.51604,271.6859 0,37.62047"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker13393-4)" 
+       class="fragment" data-fragment-index="5"/>
+    <path
+       id="path13903"
+       d="m 303.45943,428.83281 91.88074,0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker13911)" 
+       class="fragment" data-fragment-index="3"/>
+  </g>
+</svg>
+					</section>
+					<section>
+						<h3>Research question </h3>
+						<p class="fragment">A good research question:</p>
+						<ul>
+							<li class="fragment">...is theoretically insteresting. </li>
+							<li class="fragment">...clearly defines concepts of interest. </li>
+							<li class="fragment">...clarifies a relationship between concepts of interest. </li>
+							<li class="fragment">...is not too broad, but also not too narrow. </li>
+							<li class="fragment">...allows room for interpretaion, but not ambiguity. It should be clear what you are trying to study. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Research question examples </h3>
+						<ul>
+							<li class="fragment">Why do the chickens cross the road? </li>
+							<ul>
+								<li class="fragment"><em>Too broad: The question does not address which chicken or which road.</em></li>
+							</ul>
+							<li class="fragment">How many chickens crossed Richard Wagner Strasse in Munich, on February 1st, 2023? </li>
+							<ul>
+								<li class="fragment"><em>Too narrow: This question could be answered in one sentence and does not leave room for analysis. </em></li>
+							</ul>
+							<li class="fragment">What are some of the environmental factors that occurred in Munich between January and February 2022 that would cause chickens to cross Richard Wagner Strasse?</li>
+						</ul>
+						<p style="font-size:small;">Inspired by https://sites.duke.edu/urgws/files/2014/02/Research-Questions_WS-handout.pdf</p>
+					</section>
+					<section>
+						<h3>Collect data </h3>
+						<ul>
+							<li class="fragment">Availability. </li>
+							<li class="fragment">Data quality (validity and reliability) </li>
+							<li class="fragment">Computational methods: </li>
+							<ul>
+								<li class="fragment">Web scraping </li>
+								<li class="fragment">API's</li>
+								<li class="fragment">Sensors </li>
+								<li class="fragment">Downloading documents directly from source</li>
+								<li class="fragment">Re-use datasets collected by others </li>
+								<li class="fragment">Online experiments </li>
+								<li class="fragment">Online surveys (asking questions) </li>
+							</ul>
+							<li class="fragment">Salganik's distinction between: </li>
+							<ul>
+								<li class="fragment">Readymade data</li>
+								<li class="fragment">Custommade data</li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h3>Data preparation (pre-processing) </h3>
+						<ul>
+							<li class="fragment">Cleaning data: Handling missing values and data types (characters, numbers, dates, boolean/logical)</li>
+							<li class="fragment">Importing text into R</li>
+							<li class="fragment">Tokenisation (words, sentences, bigrams, n-grams, compound tokens) </li>
+							<ul>
+								<li class="fragment">A collocation analysis can be useful to compound relavent tokens. </li>
+							</ul>
+							<li class="fragment">Normalisation: Stemming and lowercase </li>
+							<li class="fragment">Removing irrelevant tokens: Symbols, punctuation, stopwords...</li>
+							<li class="fragment">Count the tokens: Document-feature-matrix </li>
+							<li class="fragment">Weighting of features </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Analysis </h3>
+						<ul>
+							<li class="fragment">Summary statistics: Max, min, mean, median, range, quantiles, sd, unique values, frequency tables. </li>
+							<li class="fragment">Text document statistics: lengths of documents (words, sentences), top features. </li>
+							<li class="fragment">Lexical diversity: Unique words in documents. </li>
+							<li class="fragment">Dictionary analysis </li>
+							<li class="fragment">Compare documents: Keyness analysis </li>
+							<li class="fragment">(Machine Learning: Supervised and unsupervised)</li>
+						</ul>
+					</section>
+				</section>
+		
+				
+				
+				
+				
+				
+				<section>
+					<h3 style="color: rgb(0,101,189)">Key concepts from course </h3>
+					<section>
+						<h3>Big Data and Political Science I</h3>
+						<ul>
+							<li class="fragment">A question of size? </li>
+							<li class="fragment">National Institute of Standards and Technology: Parallel computing needed instead of horizontal scaling. </li>
+							<li class="fragment">Brady: "A change in our cognitive environment" - The nature of big data is different: </li>
+							<ul>
+								<li class="fragment">Digitalised data: Structured and replicable. </li>
+								<li class="fragment">Connectedness: (almost) Instant access and feedback. </li>
+								<li class="fragment">Networked: Point-to-point and many-to-many, individualised/targeted mass communnication. </li>
+								<li class="fragment">Automatically recorded in real-time. </li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h3>Big Data and Political Science II</h3>
+						<p>Salganik (2018): Bit by Bit</p>
+						<ol class="fragment">
+							<li>Big </li>
+							<li>Always-on </li>
+							<li>Nonreactive </li>
+							<li>Incomplete </li>
+							<li>Inaccessible </li>
+							<li>Nonrepresentative </li>
+							<li>Drifting </li>
+							<li>Algorithmically confounded </li>
+							<li>Dirty </li>
+							<li>Sensitive </li>
+						</ol>
+					</section>
+					<section>
+						<h3>Big Data III</h3>
+						<p class="fragment">Pros: </p>
+						<ul>
+							<li class="fragment">Data about whole networks </li>
+							<li class="fragment">Real-time data </li>
+							<li class="fragment">Hidden patterns </li>
+						</ul>
+						<p class="fragment">Cons/Challenges: </p>
+						<ul>
+							<li class="fragment">Unrepresentative samples: </li>
+							<ul>
+								<li class="fragment">Internet users generally not representative. </li>
+								<li class="fragment">User of specific platforms even less so. </li>
+								<li class="fragment">Nudging by platforms affects online behaviour. </li>
+							</ul>
+							<li class="fragment">Absence of data. </li>
+							<li class="fragment">Access to data. </li>
+						</ul>
+					</section>
+					<section>
+						<h3>Data-driven vs. theory driven research</h3>
+						<div style="float: left; width: 45%">
+							<h3>Traditional PolSci methods: </h3>
+							<ul>
+								<li class="fragment">Research Question</li>
+								<li class="fragment">Hypothesis </li>
+								<li class="fragment">Conceptualisation </li>
+								<li class="fragment">Operationalisation </li>
+								<li class="fragment">Measurement / Data </li>
+							</ul>
+						</div>
+						<div style="float: right; width: 45%">
+							<h3>Data-driven methods: </h3>
+							<ul>
+								<li class="fragment">Data first! </li>
+								<li class="fragment">What does it represent? (Operationalisation) </li>
+								<li class="fragment">What does it mean? (conceptualisation) </li>
+								<li class="fragment">What can it tell us? (hypothesis) </li>
+								<li class="fragment">What can we learn from this? (RQ) </li>
+							</ul>
+						</div>
+						<q style="position: absolute; bottom: 0px; font-size: x-small">Traditional approach loosely based on Adcock, R., & Collier, D. (2001). Measurement Validity: A Shared Standard for Qualitative and Quantitative Research. American Political Science Review, 95(3), 529–546.</q>
+					</section>
+					<section>
+						<h3>Machine Learning </h3>
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									<th colspan="2" style="text-align: center;">Scale</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th>Categorical</th>
+									<th>Continuous (scaling)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Supervised </th>
+									<td>Classification (known categories) </td>
+									<td>Scaling (known scale) </td>
+								</tr>
+								<tr>
+									<th>Unsupervised </th>
+									<td>Clustering (unkown categories) </td>
+									<td>Exploring dimensions (unknown scale) </td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<h3 style="color: rgb(0,101,189)">Possibilities with computational text analysis </h3>
+						<p class="fragment">Grimmer & Stewart's (2013) four principles of automated text analysis: </p>
+						<ol>
+							<li class="fragment">All quantitative models of language are wrong - but some are useful. <span class="fragment"><em>They can be useful in several ways: </em></span></li>
+							<ul>
+								<li class="fragment">Assigning documents into predetermined categories (replacing human coding). </li>
+								<li class="fragment">Help discover new and useful categories. </li>
+								<li class="fragment">Measuring theoretically relevant quantities. </li>
+							</ul>
+							<li class="fragment">Quantitative moddels for text amplify resources and augment humans. </li>
+							<li class="fragment">There is no globally best method for automated text analysis. </li>
+							<li class="fragment">Validate, validate, validate! </li>
+							<ul>
+								<li class="fragment">For supervised methods: Demonstrate that machine classifications replicates human coding. </li>
+								<li class="fragment">For unsupervised methods: Demonstrate that measures produced corresponds to concepts claimed. </li>
+								<li class="fragment">For dictionary analysis: Both methods can be relevant. </li>
+							</ul>
+						</ol>
+					</section>
+					<section>
+						<h2>Validate dictionary </h2>
+						<p class="fragment">Three key issues we want to be aware of: </p>
+						<ul>
+							<li class="fragment">Validity: Does the categories actually make sense and represent well the concept we are interested in? </li>
+							<li class="fragment">Recall: Does the dictionary capture all the content related to concept? </li>
+							<li class="fragment">Precision: Does the dictionary only capture the content related to concept? </li>
+						</ul>
+						<p class="fragment">So recall and precision could be measured as: </p>
+						<ul>
+							<li class="fragment">Recall: Proportion of all mentions of concept that is actually captured by our dictionary. </li>
+							<li class="fragment">Precision: Proportion of all the content captured by the dictionary which actually relates to concept of interest. </li>
+						</ul>
+					</section>
+					<section>
+						<h1 class="fragment">Validation of dictionary </h1>
+						<h3 class="fragment">Example from Maerz (2019): Simulating pluralism: language of democracy in hegemonic authoritarianism. </h3>
+						<ul>
+							<li class="fragment">Qualitative check of codings in sample of 110 speeches. </li>
+							<ul>
+								<li class="fragment">Random sample of 5% of speeches from each case, excluding those already used to construct dictionary. </li>
+								<li class="fragment">Keywords-in-context search. </li>
+							</ul>
+							<li class="fragment">Frequent negations and ambigiuous terms excluded. </li>
+						</ul>
+						<p class="fragment"><a href="Dictionary+for+the+Analysis.html">Final dictionary available from link in paper. </a></p>
+					</section>
+					<section>
+						<h2>Approach to build a good dictionary: </h2>
+						<ol>
+							<li class="fragment">Identify "extreme texts" with known positions. </li>
+							<li class="fragment">Use word frequencies from each group to identify words that occur often in one group, but rarely in the other. </li>
+							<li class="fragment">Check these keywords in context to measure precision (possibly just take a random sample)</li>
+							<li class="fragment">Consider need to stem keywords. </li>
+						</ol>
+					</section>
+					<section>
+						<h3>Ethics and privacy </h3>
+						<ul>
+							<li class="fragment">Seven basic principles of the ECPR </li>
+							<li class="fragment">Six potential lawful bases to collect data according to the ECPR </li>
+							<li class="fragment">Consequentialism vs. deontology </li>
+							<li class="fragment">Four ethical principles (respect for people, beneficience, justice, respect for law and public interest) </li>
+						</ul>
+					</section>					
+				</section>
+				
+				
+				
+				
+				
+			
+
+								
+				<section>
+					<h2>Next week </h2>
+					<p class="fragment">Question and answers and recap </p>
+					<p class="fragment">Please send your questions to me by Monday morning next week: </p>
+					<p class="fragment"><em>8AM, Monday 6th February</em> </p>
+					<p class="fragment">nikolai.gad@hfp.tum.de</p>
+				</section>
+
+				<section>
+					<h1>Thanks and see you tomorrow!</h1>
+				</section>
+
+				
+				
+			</div>
+		</div>
+		
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
